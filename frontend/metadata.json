@@ -1,0 +1,6 @@
+{
+  "name": "College Complaint Management System",
+  "description": "A comprehensive frontend portal for students to submit and track college grievances and for administrators to manage, review, and resolve campus complaints.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
