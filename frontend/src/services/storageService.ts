@@ -6,7 +6,9 @@ export const CURRENT_USER_KEY = 'college_current_user_v1';
 
 export const API_BASE_URL = (
   import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? 'https://college-management-bopp.onrender.com' : '')
+  (import.meta.env.PROD
+    ? 'https://college-management-bopp.onrender.com'
+    : 'https://college-management-bopp.onrender.com')
 ).replace(/\/+$/, '');
 
 export const ADMIN_CREDENTIALS = {
@@ -101,8 +103,15 @@ export function saveComplaints(complaints: Complaint[]): void {
 }
 
 export function getComplaintById(id: string): Complaint | undefined {
+  if (!id) return undefined;
   const complaints = getComplaints();
-  return complaints.find((c) => c.id.toLowerCase() === id.toLowerCase());
+  const searchId = id.trim().toLowerCase();
+  return complaints.find(
+    (c) =>
+      (c.id && c.id.toLowerCase() === searchId) ||
+      ((c as any).complaintId && (c as any).complaintId.toLowerCase() === searchId) ||
+      ((c as any)._id && (c as any)._id.toString().toLowerCase() === searchId)
+  );
 }
 
 export function generateComplaintId(): string {
@@ -115,7 +124,7 @@ export function generateComplaintId(): string {
 export async function fetchComplaintsFromServer(studentId?: string): Promise<Complaint[]> {
   try {
     const url = studentId
-      ? `${API_BASE_URL}/api/complaints?studentId=${encodeURIComponent(studentId)}`
+      ? `${API_BASE_URL}/api/complaints?studentId=${encodeURIComponent(studentId.trim())}`
       : `${API_BASE_URL}/api/complaints`;
 
     const res = await fetch(url);
@@ -129,6 +138,15 @@ export async function fetchComplaintsFromServer(studentId?: string): Promise<Com
     const normalized: Complaint[] = rawList.map((c: any) => ({
       ...c,
       id: c.complaintId || c.id || (c._id ? c._id.toString() : ''),
+      studentName: c.studentName || 'Student',
+      studentId: c.studentId || '',
+      department: c.department || 'General',
+      location: c.location || 'Campus',
+      priority: c.priority || 'Medium',
+      status: c.status || 'Pending',
+      description: c.description || '',
+      title: c.title || 'Complaint',
+      createdAt: c.createdAt || new Date().toISOString(),
       timeline: Array.isArray(c.timeline) ? c.timeline : [],
     }));
 
@@ -138,7 +156,7 @@ export async function fetchComplaintsFromServer(studentId?: string): Promise<Com
     } else {
       // Student loaded their complaints: merge with any others in cache
       const cachedOther = getComplaints().filter(
-        (c) => c.studentId.toUpperCase() !== studentId.toUpperCase()
+        (c) => (c.studentId || '').toUpperCase() !== studentId.trim().toUpperCase()
       );
       saveComplaints([...normalized, ...cachedOther]);
     }

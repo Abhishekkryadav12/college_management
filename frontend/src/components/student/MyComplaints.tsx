@@ -43,7 +43,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
       setLoading(true);
       const serverComplaints = await fetchComplaintsFromServer(studentUser.studentId);
       const studentOnly = serverComplaints.filter(
-        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+        (c) => (c.studentId || '').toUpperCase() === (studentUser.studentId || '').toUpperCase()
       );
       setComplaints(studentOnly);
     } catch (err) {
@@ -59,7 +59,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
       if (!studentUser) return;
       const all = getComplaints();
       const studentOnly = all.filter(
-        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+        (c) => (c.studentId || '').toUpperCase() === (studentUser.studentId || '').toUpperCase()
       );
       setComplaints(studentOnly);
     };
@@ -69,11 +69,13 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
 
   const filteredComplaints = useMemo(() => {
     return complaints.filter((item) => {
+      const q = searchTerm.toLowerCase().trim();
       const matchSearch =
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase());
+        !q ||
+        (item.title || '').toLowerCase().includes(q) ||
+        (item.id || '').toLowerCase().includes(q) ||
+        (item.location || '').toLowerCase().includes(q) ||
+        (item.description || '').toLowerCase().includes(q);
 
       const matchCategory = selectedCategory === 'all' || item.category === selectedCategory;
       const matchStatus = selectedStatus === 'all' || item.status === selectedStatus;

@@ -39,7 +39,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
       setLoading(true);
       const serverComplaints = await fetchComplaintsFromServer(studentUser.studentId);
       const studentOnly = serverComplaints.filter(
-        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+        (c) => (c.studentId || '').toUpperCase() === (studentUser.studentId || '').toUpperCase()
       );
       setComplaints(studentOnly);
     } catch (err) {
@@ -55,7 +55,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
       if (!studentUser) return;
       const all = getComplaints();
       const studentOnly = all.filter(
-        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+        (c) => (c.studentId || '').toUpperCase() === (studentUser.studentId || '').toUpperCase()
       );
       setComplaints(studentOnly);
     };

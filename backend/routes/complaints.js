@@ -9,7 +9,7 @@ const formatComplaint = (doc) => {
   const obj = doc.toObject ? doc.toObject() : doc;
   return {
     ...obj,
-    id: obj.complaintId || (obj._id ? obj._id.toString() : ''),
+    id: obj.complaintId || obj.id || (obj._id ? obj._id.toString() : ''),
   };
 };
 

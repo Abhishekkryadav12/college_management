@@ -14,7 +14,7 @@ import { AdminComplaintManagement } from './components/admin/AdminComplaintManag
 import { AdminComplaintDetailModal } from './components/admin/AdminComplaintDetailModal';
 import { StudentAuthModal } from './components/auth/StudentAuthModal';
 import { AdminAuthModal } from './components/auth/AdminAuthModal';
-import { getComplaintById, getComplaints } from './services/storageService';
+import { getComplaintById, getComplaints, fetchComplaintsFromServer } from './services/storageService';
 import { Complaint } from './types';
 
 function MainApp() {
@@ -81,7 +81,17 @@ function MainApp() {
   };
 
   const handleSelectComplaint = (complaintId: string) => {
-    const item = getComplaintById(complaintId);
+    let item = getComplaintById(complaintId);
+    if (!item) {
+      const all = getComplaints();
+      const search = (complaintId || '').toLowerCase().trim();
+      item = all.find(
+        (c: any) =>
+          (c.id && c.id.toLowerCase() === search) ||
+          (c.complaintId && c.complaintId.toLowerCase() === search) ||
+          (c._id && c._id.toString().toLowerCase() === search)
+      );
+    }
     if (!item) return;
 
     if (isAdmin) {
@@ -192,7 +202,7 @@ function MainApp() {
           }}
           complaint={adminModalComplaint}
           onUpdated={() => {
-            // refresh data trigger
+            fetchComplaintsFromServer();
           }}
         />
       )}

@@ -19,6 +19,7 @@ import {
   Download,
   AlertTriangle,
   UserCheck,
+  RefreshCw,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -56,21 +57,31 @@ const STATUS_COLORS: Record<string, string> = {
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSelectComplaint }) => {
   const [complaints, setComplaints] = useState<Complaint[]>(() => getComplaints());
+  const [loading, setLoading] = useState<boolean>(false);
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const serverComplaints = await fetchComplaintsFromServer();
       setComplaints(serverComplaints);
     } catch (err) {
       console.error('Failed to load complaints:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadData();
     const handleUpdate = () => setComplaints(getComplaints());
+    const handleFocus = () => loadData();
+
     window.addEventListener('college_complaints_updated', handleUpdate);
-    return () => window.removeEventListener('college_complaints_updated', handleUpdate);
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      window.removeEventListener('college_complaints_updated', handleUpdate);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const total = complaints.length;
@@ -149,6 +160,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            <button
+              id="admin-dash-btn-refresh"
+              onClick={loadData}
+              disabled={loading}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-white text-xs font-bold rounded-xl border border-slate-700 shadow-md transition-all cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              {loading ? 'Refreshing...' : 'Refresh'}
+            </button>
             <button
               id="admin-dash-btn-manage"
               onClick={() => onNavigate('admin-complaints')}
@@ -351,42 +371,50 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {recentComplaints.map((item) => (
-                <tr
-                  key={item.id}
-                  id={`admin-recent-row-${item.id}`}
-                  className="hover:bg-slate-50 transition-colors cursor-pointer"
-                  onClick={() => onSelectComplaint(item.id)}
-                >
-                  <td className="py-3 px-4 font-mono font-bold text-slate-700">{item.id}</td>
-                  <td className="py-3 px-4">
-                    <p className="font-bold text-slate-900">{item.studentName}</p>
-                    <p className="text-[10px] text-slate-400 font-mono">{item.studentId}</p>
-                  </td>
-                  <td className="py-3 px-4">
-                    <CategoryBadge category={item.category} size="sm" />
-                  </td>
-                  <td className="py-3 px-4 font-semibold text-slate-800 max-w-xs truncate">{item.title}</td>
-                  <td className="py-3 px-4 text-slate-600">{item.location}</td>
-                  <td className="py-3 px-4">
-                    <PriorityBadge priority={item.priority} size="sm" />
-                  </td>
-                  <td className="py-3 px-4">
-                    <StatusBadge status={item.status} size="sm" />
-                  </td>
-                  <td className="py-3 px-4 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectComplaint(item.id);
-                      }}
-                      className="px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
-                    >
-                      Update
-                    </button>
+              {recentComplaints.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-8 text-center text-slate-400">
+                    {loading ? 'Fetching grievances from database...' : 'No grievances registered yet.'}
                   </td>
                 </tr>
-              ))}
+              ) : (
+                recentComplaints.map((item) => (
+                  <tr
+                    key={item.id}
+                    id={`admin-recent-row-${item.id}`}
+                    className="hover:bg-slate-50 transition-colors cursor-pointer"
+                    onClick={() => onSelectComplaint(item.id)}
+                  >
+                    <td className="py-3 px-4 font-mono font-bold text-slate-700">{item.id}</td>
+                    <td className="py-3 px-4">
+                      <p className="font-bold text-slate-900">{item.studentName || 'Student'}</p>
+                      <p className="text-[10px] text-slate-400 font-mono">{item.studentId || 'N/A'}</p>
+                    </td>
+                    <td className="py-3 px-4">
+                      <CategoryBadge category={item.category || 'Other'} size="sm" />
+                    </td>
+                    <td className="py-3 px-4 font-semibold text-slate-800 max-w-xs truncate">{item.title || 'Complaint'}</td>
+                    <td className="py-3 px-4 text-slate-600">{item.location || 'Campus'}</td>
+                    <td className="py-3 px-4">
+                      <PriorityBadge priority={item.priority || 'Medium'} size="sm" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <StatusBadge status={item.status || 'Pending'} size="sm" />
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectComplaint(item.id);
+                        }}
+                        className="px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
+                      >
+                        Update
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

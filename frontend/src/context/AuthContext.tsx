@@ -12,7 +12,9 @@ import {
 // 3. In local dev, falls back to '' (leveraging Vite dev server proxy to localhost:5000)
 const API_BASE_URL = (
   import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? 'https://college-management-bopp.onrender.com' : '')
+  (import.meta.env.PROD
+    ? 'https://college-management-bopp.onrender.com'
+    : 'https://college-management-bopp.onrender.com')
 ).replace(/\/+$/, '');
 
 interface AuthContextType {

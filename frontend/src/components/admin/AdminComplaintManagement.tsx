@@ -29,6 +29,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
   onSelectComplaint,
 }) => {
   const [complaints, setComplaints] = useState<Complaint[]>(() => getComplaints());
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Search and Filter States
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,18 +41,27 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const serverComplaints = await fetchComplaintsFromServer();
       setComplaints(serverComplaints);
     } catch (err) {
       console.error('Failed to load admin complaints:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadData();
     const handleUpdate = () => setComplaints(getComplaints());
+    const handleFocus = () => loadData();
+
     window.addEventListener('college_complaints_updated', handleUpdate);
-    return () => window.removeEventListener('college_complaints_updated', handleUpdate);
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      window.removeEventListener('college_complaints_updated', handleUpdate);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const priorityOrder: Record<Priority, number> = {
@@ -70,14 +80,16 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
   const filteredAndSortedComplaints = useMemo(() => {
     return complaints
       .filter((item) => {
-        const query = searchTerm.toLowerCase();
+        if (!item) return false;
+        const query = searchTerm.toLowerCase().trim();
         const matchSearch =
-          item.title.toLowerCase().includes(query) ||
-          item.id.toLowerCase().includes(query) ||
-          item.studentName.toLowerCase().includes(query) ||
-          item.studentId.toLowerCase().includes(query) ||
-          item.location.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query);
+          !query ||
+          (item.title || '').toLowerCase().includes(query) ||
+          (item.id || '').toLowerCase().includes(query) ||
+          (item.studentName || '').toLowerCase().includes(query) ||
+          (item.studentId || '').toLowerCase().includes(query) ||
+          (item.location || '').toLowerCase().includes(query) ||
+          (item.description || '').toLowerCase().includes(query);
 
         const matchCat = selectedCategory === 'all' || item.category === selectedCategory;
         const matchStat = selectedStatus === 'all' || item.status === selectedStatus;
@@ -88,16 +100,16 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
       })
       .sort((a, b) => {
         if (sortBy === 'date-desc') {
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
         }
         if (sortBy === 'date-asc') {
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
         }
         if (sortBy === 'priority-desc') {
-          return priorityOrder[b.priority] - priorityOrder[a.priority];
+          return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
         }
         if (sortBy === 'status') {
-          return statusOrder[a.status] - statusOrder[b.status];
+          return (statusOrder[a.status] || 0) - (statusOrder[b.status] || 0);
         }
         return 0;
       });
@@ -144,16 +156,16 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
     ];
 
     const rows = filteredAndSortedComplaints.map((c) => [
-      `"${c.id}"`,
-      `"${c.studentName}"`,
-      `"${c.studentId}"`,
-      `"${c.department}"`,
-      `"${c.category}"`,
-      `"${c.title.replace(/"/g, '""')}"`,
-      `"${c.location.replace(/"/g, '""')}"`,
-      `"${c.priority}"`,
-      `"${c.status}"`,
-      `"${new Date(c.createdAt).toLocaleDateString()}"`,
+      `"${c.id || ''}"`,
+      `"${c.studentName || ''}"`,
+      `"${c.studentId || ''}"`,
+      `"${c.department || ''}"`,
+      `"${c.category || ''}"`,
+      `"${(c.title || '').replace(/"/g, '""')}"`,
+      `"${(c.location || '').replace(/"/g, '""')}"`,
+      `"${c.priority || ''}"`,
+      `"${c.status || ''}"`,
+      `"${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '—'}"`,
       `"${(c.adminRemarks || '').replace(/"/g, '""')}"`,
       `"${(c.resolutionNote || '').replace(/"/g, '""')}"`,
     ]);
@@ -197,6 +209,15 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            id="btn-admin-refresh"
+            onClick={loadData}
+            disabled={loading}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer disabled:opacity-50"
+          >
+            <RotateCcw className={`w-4 h-4 text-blue-600 ${loading ? 'animate-spin' : ''}`} />
+            {loading ? 'Refreshing...' : 'Refresh'}
+          </button>
           <button
             id="btn-admin-export-csv"
             onClick={exportToCSV}
@@ -372,28 +393,28 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
                       {item.id}
                     </td>
                     <td className="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">
-                      {item.studentName}
+                      {item.studentName || 'Student'}
                     </td>
                     <td className="py-3.5 px-4 font-mono text-slate-600 whitespace-nowrap">
-                      {item.studentId}
+                      {item.studentId || 'N/A'}
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <CategoryBadge category={item.category} size="sm" />
+                      <CategoryBadge category={item.category || 'Other'} size="sm" />
                     </td>
                     <td className="py-3.5 px-4 font-semibold text-slate-800 max-w-xs truncate group-hover:text-indigo-700 transition-colors">
-                      {item.title}
+                      {item.title || 'Complaint'}
                     </td>
                     <td className="py-3.5 px-4 text-slate-600 whitespace-nowrap">
-                      {item.location}
+                      {item.location || 'Campus'}
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <PriorityBadge priority={item.priority} size="sm" />
+                      <PriorityBadge priority={item.priority || 'Medium'} size="sm" />
                     </td>
                     <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
                       {formatDate(item.createdAt)}
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <StatusBadge status={item.status} size="sm" />
+                      <StatusBadge status={item.status || 'Pending'} size="sm" />
                     </td>
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       <button
