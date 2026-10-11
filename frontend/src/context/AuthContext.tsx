@@ -6,6 +6,15 @@ import {
   clearCurrentUser,
 } from '../services/storageService';
 
+// Resolve Backend API URL:
+// 1. Uses VITE_API_URL if configured in environment (e.g. Vercel dashboard)
+// 2. In production builds, falls back to the deployed Render backend URL
+// 3. In local dev, falls back to '' (leveraging Vite dev server proxy to localhost:5000)
+const API_BASE_URL = (
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? 'https://college-management-bopp.onrender.com' : '')
+).replace(/\/+$/, '');
+
 interface AuthContextType {
   user: AuthUser | null;
   isAuthenticated: boolean;
@@ -51,10 +60,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const loginStudent = async (email: string, pass: string) => {
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass })
+        body: JSON.stringify({ email, password: pass }),
       });
       const data = await res.json();
       if (data.success && data.user) {
@@ -65,16 +74,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
       return { success: false, message: data.message || 'Login failed' };
     } catch (err: any) {
-      return { success: false, message: err.message };
+      console.error('[API Error] Student login failed:', err);
+      return { success: false, message: err.message || 'Network error connecting to backend' };
     }
   };
 
   const registerNewStudent = async (studentData: any) => {
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(studentData)
+        body: JSON.stringify(studentData),
       });
       const data = await res.json();
       if (data.success && data.user) {
@@ -85,16 +95,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
       return { success: false, message: data.message || 'Registration failed' };
     } catch (err: any) {
-      return { success: false, message: err.message };
+      console.error('[API Error] Student registration failed:', err);
+      return { success: false, message: err.message || 'Network error connecting to backend' };
     }
   };
 
   const loginAdmin = async (identifier: string, pass: string) => {
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/auth/admin/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password: pass })
+        body: JSON.stringify({ identifier, password: pass }),
       });
       const data = await res.json();
       if (data.success && data.user) {
@@ -103,18 +114,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(data.user);
         return { success: true, message: data.message, user: data.user };
       }
-      return { success: false, message: data.message || 'Login failed' };
+      return { success: false, message: data.message || 'Admin login failed' };
     } catch (err: any) {
-      return { success: false, message: err.message };
+      console.error('[API Error] Admin login failed:', err);
+      return { success: false, message: err.message || 'Network error connecting to backend' };
     }
   };
 
   const registerAdmin = async (adminData: any) => {
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/auth/admin/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/admin/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(adminData)
+        body: JSON.stringify(adminData),
       });
       const data = await res.json();
       if (data.success && data.user) {
@@ -123,9 +135,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(data.user);
         return { success: true, message: data.message, user: data.user };
       }
-      return { success: false, message: data.message || 'Registration failed' };
+      return { success: false, message: data.message || 'Admin registration failed' };
     } catch (err: any) {
-      return { success: false, message: err.message };
+      console.error('[API Error] Admin registration failed:', err);
+      return { success: false, message: err.message || 'Network error connecting to backend' };
     }
   };
 
@@ -135,7 +148,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const updateProfile = (updates: Partial<StudentUser>) => {
-    // This is still using local storage for now, but we don't have a profile update API yet.
     if (!user || user.role !== 'student') {
       return { success: false, message: 'No student logged in' };
     }

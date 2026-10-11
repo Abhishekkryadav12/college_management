@@ -11,22 +11,54 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// CORS configuration - read allowed frontend URL from environment variable
-const FRONTEND_URL = process.env.FRONTEND_URL;
-const allowedOrigins = FRONTEND_URL
-  ? [
-      ...FRONTEND_URL.split(',').map((url) => url.trim().replace(/\/$/, '')),
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:5173',
-    ]
-  : '*';
+// Read allowed frontend origin from process.env.FRONTEND_URL
+const rawFrontendUrl = process.env.FRONTEND_URL;
+const envOrigins = rawFrontendUrl
+  ? rawFrontendUrl.split(',').map((u) => u.trim().replace(/\/+$/, ''))
+  : [];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
+// Include production Vercel frontend URL, configured environment origins, and local dev origins
+const allowedOrigins = Array.from(
+  new Set([
+    'https://college-management-beta-virid.vercel.app',
+    ...envOrigins,
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:5173',
+  ].filter(Boolean))
 );
+
+console.log('🌐 [CORS] Allowed Origins:', allowedOrigins);
+
+// CORS configuration supporting credentials, required methods, and headers
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, server-to-server, health checks)
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const cleanOrigin = origin.trim().replace(/\/+$/, '');
+    const isAllowed = allowedOrigins.some((allowed) => allowed.replace(/\/+$/, '') === cleanOrigin);
+
+    if (isAllowed) {
+      return callback(null, true);
+    }
+
+    console.warn(`⚠️ [CORS Blocked] Request origin "${origin}" is not authorized.`);
+    return callback(new Error(`CORS policy does not allow access from origin ${origin}`));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+// Register CORS middleware before all routes and body parsers
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -55,6 +87,15 @@ app.use('/api/complaints', complaintRoutes);
 // Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend is running and connected to DB' });
+});
+
+// Centralized error handler for CORS and server errors
+app.use((err, req, res, next) => {
+  if (err && err.message && err.message.includes('CORS')) {
+    return res.status(403).json({ success: false, message: err.message });
+  }
+  console.error('❌ Server Error:', err.message || err);
+  res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
 app.listen(PORT, () => {
