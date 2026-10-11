@@ -8,7 +8,8 @@ const timelineSchema = new mongoose.Schema({
 });
 
 const complaintSchema = new mongoose.Schema({
-  studentId: { type: String, required: true },
+  complaintId: { type: String, index: true },
+  studentId: { type: String, required: true, index: true },
   studentName: { type: String, required: true },
   studentEmail: { type: String, required: true },
   department: { type: String, required: true },
@@ -28,6 +29,14 @@ const complaintSchema = new mongoose.Schema({
   assignedDepartmentOfficer: { type: String }
 }, {
   timestamps: true
+});
+
+complaintSchema.set('toJSON', {
+  virtuals: true,
+  transform: (doc, ret) => {
+    ret.id = ret.complaintId || ret._id.toString();
+    return ret;
+  }
 });
 
 export const Complaint = mongoose.model('Complaint', complaintSchema);

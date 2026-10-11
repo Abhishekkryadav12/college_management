@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { ComplaintCategory, Priority } from '../../types';
 import { CATEGORIES, PRIORITIES, addComplaint } from '../../services/storageService';
+import { triggerSuccessCelebration } from '../../utils/celebration';
 import {
   Building2,
   Zap,
@@ -90,7 +91,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
     setImageName(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!studentUser) {
@@ -115,31 +116,31 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
 
     setSubmitting(true);
 
-    setTimeout(() => {
-      try {
-        const newTicket = addComplaint({
-          title,
-          category,
-          location,
-          priority,
-          description,
-          imageUrl: imagePreview || undefined,
-          imageName: imageName || undefined,
-          student: studentUser,
-        });
+    try {
+      const newTicket = await addComplaint({
+        title,
+        category,
+        location,
+        priority,
+        description,
+        imageUrl: imagePreview || undefined,
+        imageName: imageName || undefined,
+        student: studentUser,
+      });
 
-        setSubmitting(false);
-        success('Complaint Submitted Successfully!', `Ticket ID: ${newTicket.id} registered under status: Pending.`);
+      setSubmitting(false);
+      triggerSuccessCelebration();
+      success('Complaint Submitted Successfully!', `Ticket ID: ${newTicket.id} registered under status: Pending.`);
 
-        if (onComplaintSubmitted) {
-          onComplaintSubmitted(newTicket.id);
-        }
-        onNavigate('my-complaints');
-      } catch (err) {
-        setSubmitting(false);
-        error('Submission Failed', 'Could not save complaint. Please try again.');
+      if (onComplaintSubmitted) {
+        onComplaintSubmitted(newTicket.id);
       }
-    }, 400);
+      onNavigate('my-complaints');
+    } catch (err: any) {
+      setSubmitting(false);
+      console.error('Submission error:', err);
+      error('Submission Failed', err.message || 'Could not save complaint to server. Please try again.');
+    }
   };
 
   return (

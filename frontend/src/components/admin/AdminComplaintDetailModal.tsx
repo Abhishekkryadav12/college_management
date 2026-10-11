@@ -7,7 +7,7 @@ import { PriorityBadge } from '../common/PriorityBadge';
 import { CategoryBadge } from '../common/CategoryBadge';
 import { Timeline } from '../common/Timeline';
 import { useToast } from '../../context/ToastContext';
-import confetti from 'canvas-confetti';
+import { triggerSuccessCelebration } from '../../utils/celebration';
 import {
   User,
   Mail,
@@ -57,12 +57,12 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
 
   if (!complaint) return null;
 
-  const handleUpdate = (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
-    setTimeout(() => {
-      const updated = updateComplaintStatus(
+    try {
+      const updated = await updateComplaintStatus(
         complaint.id,
         status,
         adminRemarks.trim(),
@@ -74,21 +74,19 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
 
       if (updated) {
         if (status === 'Resolved' && complaint.status !== 'Resolved') {
-          confetti({
-            particleCount: 80,
-            spread: 60,
-            origin: { y: 0.6 },
-          });
+          triggerSuccessCelebration();
           success('Complaint Resolved!', `Ticket ${complaint.id} closed and marked as Resolved.`);
         } else {
           success('Status Updated', `Ticket ${complaint.id} set to ${status}.`);
         }
         onUpdated();
         onClose();
-      } else {
-        error('Update Failed', 'Could not update complaint record.');
       }
-    }, 300);
+    } catch (err: any) {
+      setSaving(false);
+      console.error('Update status error:', err);
+      error('Update Failed', err.message || 'Could not update complaint record on server.');
+    }
   };
 
   const formatDate = (isoString?: string) => {

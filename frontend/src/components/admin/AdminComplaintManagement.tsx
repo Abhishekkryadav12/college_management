@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Complaint, ComplaintCategory, ComplaintStatus, Priority } from '../../types';
-import { getComplaints, CATEGORIES, PRIORITIES, DEPARTMENTS } from '../../services/storageService';
+import { getComplaints, fetchComplaintsFromServer, CATEGORIES, PRIORITIES, DEPARTMENTS } from '../../services/storageService';
 import { StatusBadge } from '../common/StatusBadge';
 import { PriorityBadge } from '../common/PriorityBadge';
 import { CategoryBadge } from '../common/CategoryBadge';
@@ -28,8 +28,7 @@ interface AdminComplaintManagementProps {
 export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> = ({
   onSelectComplaint,
 }) => {
-  const { success } = useToast();
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [complaints, setComplaints] = useState<Complaint[]>(() => getComplaints());
 
   // Search and Filter States
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,13 +38,18 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
   const [selectedDepartment, setSelectedDepartment] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'date-desc' | 'date-asc' | 'priority-desc' | 'status'>('date-desc');
 
-  const loadData = () => {
-    setComplaints(getComplaints());
+  const loadData = async () => {
+    try {
+      const serverComplaints = await fetchComplaintsFromServer();
+      setComplaints(serverComplaints);
+    } catch (err) {
+      console.error('Failed to load admin complaints:', err);
+    }
   };
 
   useEffect(() => {
     loadData();
-    const handleUpdate = () => loadData();
+    const handleUpdate = () => setComplaints(getComplaints());
     window.addEventListener('college_complaints_updated', handleUpdate);
     return () => window.removeEventListener('college_complaints_updated', handleUpdate);
   }, []);

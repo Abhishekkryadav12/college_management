@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Complaint, ComplaintCategory, ComplaintStatus, Priority } from '../../types';
-import { getComplaints, CATEGORIES } from '../../services/storageService';
+import { getComplaints, fetchComplaintsFromServer, CATEGORIES } from '../../services/storageService';
 import { StatCard } from '../common/StatCard';
 import { StatusBadge } from '../common/StatusBadge';
 import { PriorityBadge } from '../common/PriorityBadge';
@@ -55,15 +55,20 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSelectComplaint }) => {
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [complaints, setComplaints] = useState<Complaint[]>(() => getComplaints());
 
-  const loadData = () => {
-    setComplaints(getComplaints());
+  const loadData = async () => {
+    try {
+      const serverComplaints = await fetchComplaintsFromServer();
+      setComplaints(serverComplaints);
+    } catch (err) {
+      console.error('Failed to load complaints:', err);
+    }
   };
 
   useEffect(() => {
     loadData();
-    const handleUpdate = () => loadData();
+    const handleUpdate = () => setComplaints(getComplaints());
     window.addEventListener('college_complaints_updated', handleUpdate);
     return () => window.removeEventListener('college_complaints_updated', handleUpdate);
   }, []);

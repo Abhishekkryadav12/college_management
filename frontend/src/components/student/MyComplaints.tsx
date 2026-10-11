@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Complaint, ComplaintCategory, ComplaintStatus, Priority } from '../../types';
-import { getComplaints, CATEGORIES, PRIORITIES } from '../../services/storageService';
+import { getComplaints, fetchComplaintsFromServer, CATEGORIES, PRIORITIES } from '../../services/storageService';
 import { StatusBadge } from '../common/StatusBadge';
 import { PriorityBadge } from '../common/PriorityBadge';
 import { CategoryBadge } from '../common/CategoryBadge';
@@ -25,7 +25,11 @@ interface MyComplaintsProps {
 
 export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelectComplaint }) => {
   const { studentUser } = useAuth();
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [complaints, setComplaints] = useState<Complaint[]>(() => {
+    if (!studentUser) return [];
+    return getComplaints().filter((c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase());
+  });
+  const [loading, setLoading] = useState(false);
 
   // Filters state
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,16 +37,32 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
 
-  const loadData = () => {
+  const loadData = async () => {
     if (!studentUser) return;
-    const all = getComplaints();
-    const studentOnly = all.filter((c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase());
-    setComplaints(studentOnly);
+    try {
+      setLoading(true);
+      const serverComplaints = await fetchComplaintsFromServer(studentUser.studentId);
+      const studentOnly = serverComplaints.filter(
+        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+      );
+      setComplaints(studentOnly);
+    } catch (err) {
+      console.error('Failed to load student complaints:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadData();
-    const handleUpdate = () => loadData();
+    const handleUpdate = () => {
+      if (!studentUser) return;
+      const all = getComplaints();
+      const studentOnly = all.filter(
+        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+      );
+      setComplaints(studentOnly);
+    };
     window.addEventListener('college_complaints_updated', handleUpdate);
     return () => window.removeEventListener('college_complaints_updated', handleUpdate);
   }, [studentUser]);

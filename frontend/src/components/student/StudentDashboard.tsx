@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Complaint, ComplaintStatus } from '../../types';
-import { getComplaints } from '../../services/storageService';
+import { getComplaints, fetchComplaintsFromServer } from '../../services/storageService';
 import { StatCard } from '../common/StatCard';
 import { StatusBadge } from '../common/StatusBadge';
 import { PriorityBadge } from '../common/PriorityBadge';
@@ -27,18 +27,38 @@ interface StudentDashboardProps {
 
 export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, onSelectComplaint }) => {
   const { studentUser } = useAuth();
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [complaints, setComplaints] = useState<Complaint[]>(() => {
+    if (!studentUser) return [];
+    return getComplaints().filter((c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase());
+  });
+  const [loading, setLoading] = useState(false);
 
-  const loadStudentComplaints = () => {
+  const loadStudentComplaints = async () => {
     if (!studentUser) return;
-    const all = getComplaints();
-    const studentOnly = all.filter((c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase());
-    setComplaints(studentOnly);
+    try {
+      setLoading(true);
+      const serverComplaints = await fetchComplaintsFromServer(studentUser.studentId);
+      const studentOnly = serverComplaints.filter(
+        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+      );
+      setComplaints(studentOnly);
+    } catch (err) {
+      console.error('Failed to load student complaints:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadStudentComplaints();
-    const handleUpdate = () => loadStudentComplaints();
+    const handleUpdate = () => {
+      if (!studentUser) return;
+      const all = getComplaints();
+      const studentOnly = all.filter(
+        (c) => c.studentId.toUpperCase() === studentUser.studentId.toUpperCase()
+      );
+      setComplaints(studentOnly);
+    };
     window.addEventListener('college_complaints_updated', handleUpdate);
     return () => window.removeEventListener('college_complaints_updated', handleUpdate);
   }, [studentUser]);
