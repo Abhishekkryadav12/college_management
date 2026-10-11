@@ -1,39 +1,95 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect, ReactNode } from 'react';
 import { ToastMessage } from '../types';
 import { CheckCircle2, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface ToastContextType {
-  showToast: (type: ToastMessage['type'], title: string, message?: string) => void;
-  success: (title: string, message?: string) => void;
-  error: (title: string, message?: string) => void;
-  info: (title: string, message?: string) => void;
-  warning: (title: string, message?: string) => void;
+  showToast: (type: ToastMessage['type'], title: string, message?: string, duration?: number) => void;
+  success: (title: string, message?: string, duration?: number) => void;
+  error: (title: string, message?: string, duration?: number) => void;
+  info: (title: string, message?: string, duration?: number) => void;
+  warning: (title: string, message?: string, duration?: number) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
+// Duration configuration: success toasts auto-dismiss in ~1.5s; errors give users enough time to read
+const DEFAULT_DURATIONS: Record<ToastMessage['type'], number> = {
+  success: 1500, // Exactly 1.5 seconds auto-dismiss
+  error: 6000,   // Sufficient reading time for errors
+  warning: 4500,
+  info: 3500,
+};
+
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  // Cleanup all pending timers on unmount
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((timer) => clearTimeout(timer));
+      timersRef.current.clear();
+    };
+  }, []);
 
   const removeToast = useCallback((id: string) => {
+    // Clear associated timer if still pending
+    const timer = timersRef.current.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      timersRef.current.delete(id);
+    }
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const showToast = useCallback((type: ToastMessage['type'], title: string, message?: string) => {
-    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const newToast: ToastMessage = { id, type, title, message };
-    setToasts((prev) => [...prev.slice(-4), newToast]);
+  const showToast = useCallback(
+    (type: ToastMessage['type'], title: string, message?: string, customDuration?: number) => {
+      const id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      const newToast: ToastMessage = { id, type, title, message };
 
-    setTimeout(() => {
-      removeToast(id);
-    }, 4500);
-  }, [removeToast]);
+      setToasts((prev) => {
+        // Limit max active toasts to 4 and clear timers for discarded toasts
+        if (prev.length >= 4) {
+          const removed = prev.slice(0, prev.length - 3);
+          removed.forEach((item) => {
+            const t = timersRef.current.get(item.id);
+            if (t) {
+              clearTimeout(t);
+              timersRef.current.delete(item.id);
+            }
+          });
+          return [...prev.slice(-3), newToast];
+        }
+        return [...prev, newToast];
+      });
 
-  const success = useCallback((title: string, message?: string) => showToast('success', title, message), [showToast]);
-  const error = useCallback((title: string, message?: string) => showToast('error', title, message), [showToast]);
-  const info = useCallback((title: string, message?: string) => showToast('info', title, message), [showToast]);
-  const warning = useCallback((title: string, message?: string) => showToast('warning', title, message), [showToast]);
+      const duration = customDuration ?? DEFAULT_DURATIONS[type];
+      const timer = setTimeout(() => {
+        removeToast(id);
+      }, duration);
+
+      timersRef.current.set(id, timer);
+    },
+    [removeToast]
+  );
+
+  const success = useCallback(
+    (title: string, message?: string, duration?: number) => showToast('success', title, message, duration),
+    [showToast]
+  );
+  const error = useCallback(
+    (title: string, message?: string, duration?: number) => showToast('error', title, message, duration),
+    [showToast]
+  );
+  const info = useCallback(
+    (title: string, message?: string, duration?: number) => showToast('info', title, message, duration),
+    [showToast]
+  );
+  const warning = useCallback(
+    (title: string, message?: string, duration?: number) => showToast('warning', title, message, duration),
+    [showToast]
+  );
 
   return (
     <ToastContext.Provider value={{ showToast, success, error, info, warning }}>
@@ -77,7 +133,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 <button
                   id={`btn-close-toast-${toast.id}`}
                   onClick={() => removeToast(toast.id)}
-                  className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-black/5"
+                  className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-black/5 cursor-pointer"
                   aria-label="Dismiss toast"
                 >
                   <X className="w-4 h-4" />

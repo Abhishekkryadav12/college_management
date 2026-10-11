@@ -3,6 +3,7 @@ import { Modal } from '../common/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { ADMIN_CREDENTIALS } from '../../services/storageService';
+import { triggerSuccessCelebration } from '../../utils/celebration';
 import { ShieldCheck, Lock, Mail, User, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 interface AdminAuthModalProps {
@@ -43,6 +44,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
     setLoading(false);
     
     if (res.success) {
+      triggerSuccessCelebration();
       success('Admin Access Granted', `Welcome ${res.user?.fullName || 'Administrator'}`);
       onClose();
       onSuccess();
@@ -75,6 +77,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
     setLoading(false);
     
     if (res.success) {
+      triggerSuccessCelebration();
       success('Registration Complete', 'Admin account created successfully.');
       onClose();
       onSuccess();

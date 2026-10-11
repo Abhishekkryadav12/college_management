@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Modal } from '../common/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { DEPARTMENTS, YEARS_SEMESTERS, getStudents } from '../../services/storageService';
-import { User, Lock, Mail, Building, BookOpen, KeyRound, Sparkles, CheckCircle2 } from 'lucide-react';
+import { DEPARTMENTS, YEARS_SEMESTERS } from '../../services/storageService';
+import { triggerSuccessCelebration } from '../../utils/celebration';
+import { User, Lock } from 'lucide-react';
 
 interface StudentAuthModalProps {
   isOpen: boolean;
@@ -56,6 +57,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
     setLoading(false);
     
     if (res.success) {
+      triggerSuccessCelebration();
       success('Welcome back!', `Logged in as ${res.user?.fullName}`);
       onClose();
       onSuccess();
@@ -107,30 +109,13 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
     setLoading(false);
     
     if (res.success) {
+      triggerSuccessCelebration();
       success('Registration Complete', `Welcome to CampusCare, ${res.user?.fullName}!`);
       onClose();
       onSuccess();
     } else {
       error('Registration Failed', res.message);
     }
-  };
-
-  // Quick autofill demo student
-  const handleQuickDemoLogin = (email: string, pass: string) => {
-    setLoginIdentifier(email);
-    setLoginPassword(pass);
-    setLoading(true);
-    setTimeout(() => {
-      const res = loginStudent(email, pass);
-      setLoading(false);
-      if (res.success) {
-        success('Welcome back!', `Demo Login successful as ${res.user?.fullName}`);
-        onClose();
-        onSuccess();
-      } else {
-        error('Login Failed', res.message);
-      }
-    }, 250);
   };
 
   return (
@@ -221,36 +206,6 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
               {loading ? 'Authenticating...' : 'Sign In to Student Portal'}
             </button>
           </form>
-
-          {/* 1-Click Demo Profiles Autofill */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-blue-600" />
-                1-Click Demo Student Accounts
-              </span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button
-                type="button"
-                id="btn-demo-login-rahul"
-                onClick={() => handleQuickDemoLogin('rahul.sharma@college.edu', 'password123')}
-                className="p-2 text-left bg-slate-50 hover:bg-blue-50/70 border border-slate-200/80 rounded-xl transition-all group cursor-pointer"
-              >
-                <p className="text-xs font-bold text-slate-800 group-hover:text-blue-700">Rahul Sharma (CS)</p>
-                <p className="text-[10px] text-slate-500">Roll: 2023CSB042 • 3rd Year</p>
-              </button>
-              <button
-                type="button"
-                id="btn-demo-login-ananya"
-                onClick={() => handleQuickDemoLogin('ananya.verma@college.edu', 'password123')}
-                className="p-2 text-left bg-slate-50 hover:bg-blue-50/70 border border-slate-200/80 rounded-xl transition-all group cursor-pointer"
-              >
-                <p className="text-xs font-bold text-slate-800 group-hover:text-blue-700">Ananya Verma (ECE)</p>
-                <p className="text-[10px] text-slate-500">Roll: 2024ECE118 • 2nd Year</p>
-              </button>
-            </div>
-          </div>
         </div>
       ) : (
         <form onSubmit={handleRegister} className="space-y-4">
@@ -399,7 +354,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
             <button 
               type="button"
               onClick={() => setMode('login')}
-              className="text-sm font-bold text-blue-600 hover:text-blue-800 focus:outline-none"
+              className="text-sm font-bold text-blue-600 hover:text-blue-800 focus:outline-none cursor-pointer"
             >
               Login
             </button>
