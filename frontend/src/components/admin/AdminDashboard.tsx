@@ -394,7 +394,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
                     <td className="py-3 px-4">
                       <CategoryBadge category={item.category || 'Other'} size="sm" />
                     </td>
-                    <td className="py-3 px-4 font-semibold text-slate-800 max-w-xs truncate">{item.title || 'Complaint'}</td>
+                    <td className="py-3 px-4 font-semibold text-slate-800 max-w-xs">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <span className="truncate">{item.title || 'Complaint'}</span>
+                        {item.imageUrl && (
+                          <span className="shrink-0 inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#DBEAFE] text-[#1D4ED8] text-[10px] font-bold rounded border border-[#BFDBFE]" title="Includes photo evidence">
+                            📷 Photo
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="py-3 px-4 text-slate-600">{item.location || 'Campus'}</td>
                     <td className="py-3 px-4">
                       <PriorityBadge priority={item.priority || 'Medium'} size="sm" />

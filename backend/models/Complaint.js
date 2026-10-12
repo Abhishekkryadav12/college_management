@@ -14,6 +14,7 @@ const complaintSchema = new mongoose.Schema({
   studentEmail: { type: String, required: true },
   department: { type: String, required: true },
   yearSemester: { type: String, required: true },
+  studentPhone: { type: String },
   title: { type: String, required: true },
   category: { type: String, required: true },
   location: { type: String, required: true },

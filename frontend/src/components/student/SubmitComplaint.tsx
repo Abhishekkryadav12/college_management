@@ -42,24 +42,78 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleImageFile = (file: File) => {
+  // Compress & resize image to ensure fast, reliable upload (under ~300KB)
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1600;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(event.target?.result as string);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+          // Export as optimized JPEG (0.82 quality)
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          resolve(dataUrl);
+        };
+        img.onerror = () => resolve(event.target?.result as string);
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       error('Invalid File', 'Please select an image file (PNG, JPG, JPEG, WebP).');
       return;
     }
-    if (file.size > 4 * 1024 * 1024) {
-      error('File Too Large', 'Maximum image size is 4MB.');
+    if (file.size > 15 * 1024 * 1024) {
+      error('File Too Large', 'Maximum image size is 15MB. Please choose a smaller photo.');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result as string);
+    try {
+      setCompressing(true);
+      const compressedDataUrl = await compressImage(file);
+      setImagePreview(compressedDataUrl);
       setImageName(file.name);
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Image compression failed, using raw file:', err);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result as string);
+        setImageName(file.name);
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setCompressing(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -345,7 +399,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                       browse files
                     </label>
                   </p>
-                  <p className="text-[11px] text-slate-400 mt-1">PNG, JPG, JPEG up to 4MB</p>
+                  <p className="text-[11px] text-slate-400 mt-1">PNG, JPG, JPEG, WebP up to 15MB (auto-optimized)</p>
                   <input
                     id="image-file-input"
                     type="file"
@@ -365,7 +419,9 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                   />
                   <div>
                     <p className="text-xs font-bold text-slate-800 truncate max-w-xs">{imageName || 'Attached image'}</p>
-                    <p className="text-[11px] text-[#15803D] font-medium">Ready to upload</p>
+                    <p className="text-[11px] text-[#15803D] font-medium">
+                      {compressing ? 'Optimizing photo...' : '✓ Optimized & ready to upload'}
+                    </p>
                   </div>
                 </div>
                 <button

@@ -27,6 +27,7 @@ export interface Complaint {
   studentEmail: string;
   department: string;
   yearSemester: string;
+  studentPhone?: string;
   title: string;
   category: ComplaintCategory;
   location: string;

@@ -60,7 +60,9 @@ const corsOptions = {
 // Register CORS middleware before all routes and body parsers
 app.use(cors(corsOptions));
 
-app.use(express.json());
+// Support JSON and URL-encoded payloads with large image uploads (up to 50MB)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Database Connection
 const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
@@ -89,13 +91,17 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend is running and connected to DB' });
 });
 
-// Centralized error handler for CORS and server errors
+// Centralized error handler for CORS, payload limits, and server errors
 app.use((err, req, res, next) => {
   if (err && err.message && err.message.includes('CORS')) {
     return res.status(403).json({ success: false, message: err.message });
   }
+  if (err && (err.type === 'entity.too.large' || err.status === 413)) {
+    console.warn('⚠️ [Payload Too Large] Request body exceeded size limit');
+    return res.status(413).json({ success: false, message: 'Image payload is too large. Please upload an image under 10MB.' });
+  }
   console.error('❌ Server Error:', err.message || err);
-  res.status(500).json({ success: false, message: 'Internal server error' });
+  res.status(500).json({ success: false, message: err.message || 'Internal server error' });
 });
 
 app.listen(PORT, () => {

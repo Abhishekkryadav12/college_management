@@ -22,6 +22,8 @@ import {
   ImageIcon,
   FileCheck,
   Send,
+  Phone,
+  Maximize2,
 } from 'lucide-react';
 
 interface AdminComplaintDetailModalProps {
@@ -149,39 +151,100 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
           />
         </div>
 
-        {/* Complaint Information Box */}
+        {/* Complete Student Profile Information */}
+        <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 text-xs">
+          <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-1.5 text-xs">
+            <User className="w-3.5 h-3.5 text-[#173B67]" />
+            Student Submitter Details
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div>
+              <span className="text-slate-400 block text-[11px]">Full Name</span>
+              <span className="font-bold text-slate-800">{complaint.studentName || 'Student'}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[11px]">Roll Number / ID</span>
+              <span className="font-mono font-bold text-slate-800">{complaint.studentId || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[11px]">Department</span>
+              <span className="font-semibold text-slate-800">{complaint.department || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[11px]">Year / Semester</span>
+              <span className="text-slate-700">{complaint.yearSemester || 'N/A'}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[11px]">College Email</span>
+              <a href={`mailto:${complaint.studentEmail}`} className="text-[#173B67] hover:underline font-medium truncate block">
+                {complaint.studentEmail || 'N/A'}
+              </a>
+            </div>
+            <div>
+              <span className="text-slate-400 block text-[11px]">Contact Phone</span>
+              <span className="text-slate-700 font-mono">
+                {complaint.studentPhone || 'Not provided'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Complaint Location and Grievance Statement */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 space-y-2 text-xs">
             <h4 className="font-bold text-slate-900 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#173B67]" />
-              Location & Details
+              Exact Location & Submission Time
             </h4>
-            <p className="text-slate-700 font-semibold">{complaint.location}</p>
+            <p className="text-slate-800 font-semibold">{complaint.location}</p>
             <p className="text-slate-500">Submitted: {formatDate(complaint.createdAt)}</p>
-            <p className="text-slate-500">Email: {complaint.studentEmail}</p>
           </div>
 
           <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 space-y-2 text-xs">
             <h4 className="font-bold text-slate-900">Grievance Statement</h4>
-            <p className="text-slate-700 leading-relaxed max-h-24 overflow-y-auto whitespace-pre-wrap">
+            <p className="text-slate-700 leading-relaxed max-h-28 overflow-y-auto whitespace-pre-wrap">
               {complaint.description}
             </p>
           </div>
         </div>
 
         {/* Attached Photo if available */}
-        {complaint.imageUrl && (
+        {complaint.imageUrl ? (
           <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200">
-            <h4 className="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
-              <ImageIcon className="w-3.5 h-3.5 text-[#173B67]" />
-              Student Attachment Preview
-            </h4>
-            <img
-              src={complaint.imageUrl}
-              alt="Evidence"
-              onClick={() => setShowImageFull(true)}
-              className="max-h-40 rounded-lg border border-slate-200 cursor-pointer hover:opacity-90"
-            />
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                <ImageIcon className="w-3.5 h-3.5 text-[#173B67]" />
+                Attached Evidence Photo ({complaint.imageName || 'Complaint Photo'})
+              </h4>
+              <button
+                type="button"
+                onClick={() => setShowImageFull(true)}
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-[#173B67] hover:underline cursor-pointer"
+              >
+                <Maximize2 className="w-3 h-3" />
+                View Full Image
+              </button>
+            </div>
+            <div className="relative group inline-block">
+              <img
+                src={complaint.imageUrl}
+                alt="Evidence"
+                onClick={() => setShowImageFull(true)}
+                className="max-h-56 rounded-lg border border-slate-300 shadow-2xs cursor-pointer group-hover:opacity-95 transition-all"
+              />
+              <div
+                onClick={() => setShowImageFull(true)}
+                className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 rounded-lg flex items-center justify-center text-white text-xs font-bold transition-opacity cursor-pointer gap-1.5"
+              >
+                <Maximize2 className="w-4 h-4" />
+                Click to enlarge
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200 text-xs text-slate-400 flex items-center gap-2">
+            <ImageIcon className="w-4 h-4 text-slate-300" />
+            <span>No supporting photo attached with this grievance.</span>
           </div>
         )}
 
@@ -304,12 +367,21 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
       {showImageFull && complaint.imageUrl && (
         <div
           onClick={() => setShowImageFull(false)}
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex flex-col items-center justify-center p-4 cursor-pointer"
         >
+          <div className="w-full max-w-4xl flex items-center justify-between text-white pb-3 px-2 text-xs">
+            <span className="font-bold flex items-center gap-1.5">
+              <ImageIcon className="w-4 h-4" />
+              {complaint.imageName || 'Attached Evidence Photo'}
+            </span>
+            <span className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-white font-semibold transition-colors">
+              Click anywhere or press Esc to close ✕
+            </span>
+          </div>
           <img
             src={complaint.imageUrl}
             alt="Full view"
-            className="max-h-[90vh] max-w-full rounded-xl shadow-2xl object-contain"
+            className="max-h-[82vh] max-w-full rounded-xl shadow-2xl object-contain border border-white/20"
           />
         </div>
       )}

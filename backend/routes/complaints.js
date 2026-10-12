@@ -93,6 +93,7 @@ router.post('/', async (req, res) => {
       studentEmail: data.studentEmail ? data.studentEmail.trim().toLowerCase() : '',
       department: data.department || 'General',
       yearSemester: data.yearSemester || 'N/A',
+      studentPhone: (data.studentPhone || data.phone || '').toString().trim(),
       title: data.title.trim(),
       category: data.category,
       location: data.location.trim(),

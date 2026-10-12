@@ -274,8 +274,15 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
                       <td className="py-3.5 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">
                         {item.id}
                       </td>
-                      <td className="py-3.5 px-4 font-bold text-slate-900 group-hover:text-[#173B67] transition-colors max-w-xs truncate">
-                        {item.title}
+                      <td className="py-3.5 px-4 font-bold text-slate-900 group-hover:text-[#173B67] transition-colors max-w-xs">
+                        <div className="flex items-center gap-1.5 truncate">
+                          <span className="truncate">{item.title}</span>
+                          {item.imageUrl && (
+                            <span className="shrink-0 inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#DBEAFE] text-[#1D4ED8] text-[10px] font-bold rounded border border-[#BFDBFE]" title="Includes photo evidence">
+                              📷 Photo
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <CategoryBadge category={item.category} size="sm" />
