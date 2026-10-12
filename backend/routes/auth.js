@@ -42,22 +42,39 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    const rawIdentifier = req.body.email || req.body.identifier;
+    const { password } = req.body;
+    if (!rawIdentifier || !password) {
+      return res.status(400).json({ success: false, message: 'Email/Roll Number and password are required' });
     }
 
+    const cleanId = rawIdentifier.trim();
+    // Allow login via email or student roll number
     const student = await Student.findOne({
-      email: email.trim().toLowerCase(),
-      password,
+      $or: [
+        { email: cleanId.toLowerCase() },
+        { studentId: cleanId.toUpperCase() },
+        { studentId: cleanId }
+      ]
     });
 
     if (!student) {
-      console.warn(`⚠️ [Student Login] Invalid credentials for email: "${email}"`);
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      console.warn(`⚠️ [Student Login] Account not found for identifier: "${cleanId}"`);
+      return res.status(401).json({
+        success: false,
+        message: 'Account not found. If you are a new student, please switch to the "New Student Register" tab to create your profile.'
+      });
     }
 
-    console.log(`✅ [Student Login] Login successful: ${student.fullName} (${student.email})`);
+    if (student.password !== password) {
+      console.warn(`⚠️ [Student Login] Incorrect password for student: "${cleanId}"`);
+      return res.status(401).json({
+        success: false,
+        message: 'Incorrect password. Please verify your password and try again.'
+      });
+    }
+
+    console.log(`✅ [Student Login] Login successful: ${student.fullName} (${student.email} / ${student.studentId})`);
     res.json({ success: true, message: 'Login successful', user: student });
   } catch (error) {
     console.error('❌ [Student Login] Error occurred:', error.message);
@@ -107,15 +124,19 @@ router.post('/admin/login', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Username/Email and password are required' });
     }
 
-    const cleanIdentifier = identifier.trim().toLowerCase();
+    const cleanIdentifier = identifier.trim();
     const admin = await Admin.findOne({
-      $or: [{ email: cleanIdentifier }, { adminUsername: identifier.trim() }],
-      password,
+      $or: [{ email: cleanIdentifier.toLowerCase() }, { adminUsername: cleanIdentifier }],
     });
 
     if (!admin) {
-      console.warn(`⚠️ [Admin Login] Invalid credentials for identifier: "${identifier}"`);
-      return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
+      console.warn(`⚠️ [Admin Login] Admin not found: "${identifier}"`);
+      return res.status(401).json({ success: false, message: 'Admin account not found. Please verify your credentials or register.' });
+    }
+
+    if (admin.password !== password) {
+      console.warn(`⚠️ [Admin Login] Incorrect password for admin: "${identifier}"`);
+      return res.status(401).json({ success: false, message: 'Incorrect password. Please try again.' });
     }
 
     console.log(`✅ [Admin Login] Admin login successful: ${admin.fullName} (${admin.adminUsername})`);

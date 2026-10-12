@@ -48,7 +48,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!loginIdentifier.trim() || !loginPassword.trim()) {
-      error('Missing fields', 'Please enter your Email and password.');
+      error('Missing fields', 'Please enter your Email or Roll Number and password.');
       return;
     }
 
@@ -159,7 +159,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Email Address
+                Email Address or Student ID / Roll Number
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -167,9 +167,9 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 </div>
                 <input
                   id="input-student-login-id"
-                  type="email"
+                  type="text"
                   required
-                  placeholder="e.g. rahul.sharma@college.edu"
+                  placeholder="e.g. rahul.sharma@college.edu or 244325"
                   value={loginIdentifier}
                   onChange={(e) => setLoginIdentifier(e.target.value)}
                   className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
@@ -205,6 +205,19 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
             >
               {loading ? 'Authenticating...' : 'Sign In to Student Portal'}
             </button>
+
+            <div className="pt-2 text-center">
+              <p className="text-xs text-slate-600">
+                Don't have an account yet?{' '}
+                <button
+                  type="button"
+                  onClick={() => setMode('register')}
+                  className="text-[#173B67] font-bold hover:underline cursor-pointer"
+                >
+                  New Student Register
+                </button>
+              </p>
+            </div>
           </form>
         </div>
       ) : (

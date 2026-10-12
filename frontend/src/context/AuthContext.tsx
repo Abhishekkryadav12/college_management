@@ -62,10 +62,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const loginStudent = async (email: string, pass: string) => {
     try {
+      const cleanIdentifier = email.trim();
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass }),
+        body: JSON.stringify({ email: cleanIdentifier, identifier: cleanIdentifier, password: pass }),
       });
       const data = await res.json();
       if (data.success && data.user) {
