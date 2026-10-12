@@ -64,10 +64,12 @@ export const Timeline: React.FC<TimelineProps> = ({
           <div className="absolute top-5 left-1/8 right-1/8 h-1 bg-slate-200 -z-0" />
           {/* Active Colored Line */}
           <div
-            className="absolute top-5 left-1/8 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 -z-0"
+            className="absolute top-5 left-1/8 h-1 bg-[#173B67] transition-all duration-300 -z-0"
             style={{
               width:
-                activeIndex === 0
+                status === 'Rejected'
+                  ? '0%'
+                  : activeIndex === 0
                   ? '0%'
                   : activeIndex === 1
                   ? '33%'
@@ -78,26 +80,26 @@ export const Timeline: React.FC<TimelineProps> = ({
           />
 
           {stages.map((stage, idx) => {
-            const isCompleted = idx < activeIndex || (idx === 3 && status === 'Resolved');
-            const isCurrent = idx === activeIndex && !(idx === 3 && status === 'Resolved');
+            const isCompleted = status !== 'Rejected' && (idx < activeIndex || (idx === 3 && status === 'Resolved'));
+            const isCurrent = status !== 'Rejected' && idx === activeIndex && !(idx === 3 && status === 'Resolved');
 
             let circleBg = 'bg-white border-2 border-slate-300 text-slate-400';
             if (isCompleted) {
-              circleBg = 'bg-emerald-600 border-2 border-emerald-600 text-white shadow-sm shadow-emerald-200';
+              circleBg = 'bg-[#15803D] border-2 border-[#15803D] text-white shadow-xs';
             } else if (isCurrent) {
               if (stage.key === 'Pending') {
-                circleBg = 'bg-amber-500 border-4 border-amber-100 text-white shadow-md shadow-amber-200 animate-pulse';
+                circleBg = 'bg-[#B45309] border-2 border-[#FEF3C7] text-white shadow-xs';
               } else if (stage.key === 'In Progress') {
-                circleBg = 'bg-blue-600 border-4 border-blue-100 text-white shadow-md shadow-blue-200 animate-pulse';
+                circleBg = 'bg-[#1D4ED8] border-2 border-[#DBEAFE] text-white shadow-xs';
               } else {
-                circleBg = 'bg-indigo-600 border-4 border-indigo-100 text-white shadow-md shadow-indigo-200';
+                circleBg = 'bg-[#15803D] border-2 border-[#DCFCE7] text-white shadow-xs';
               }
             }
 
             return (
               <div key={stage.key} className="flex flex-col items-center text-center relative z-10">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${circleBg}`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-200 ${circleBg}`}
                 >
                   {isCompleted ? (
                     <Check className="w-5 h-5 stroke-[2.5]" />
@@ -117,10 +119,10 @@ export const Timeline: React.FC<TimelineProps> = ({
                   <p
                     className={`text-xs font-bold leading-tight ${
                       isCurrent
-                        ? 'text-blue-900 font-extrabold'
+                        ? 'text-[#173B67]'
                         : isCompleted
-                        ? 'text-slate-800 font-semibold'
-                        : 'text-slate-400 font-medium'
+                        ? 'text-slate-800'
+                        : 'text-slate-400'
                     }`}
                   >
                     {stage.label}
@@ -137,6 +139,13 @@ export const Timeline: React.FC<TimelineProps> = ({
             );
           })}
         </div>
+
+        {status === 'Rejected' && (
+          <div className="mt-4 p-3 rounded-xl bg-[#FEE2E2] border border-[#FECACA] flex items-center gap-2.5 text-xs text-[#B91C1C]">
+            <ShieldAlert className="w-4 h-4 shrink-0 text-[#B91C1C]" />
+            <span className="font-semibold">This grievance has been reviewed and closed as Rejected.</span>
+          </div>
+        )}
       </div>
 
       {/* Detailed Activity Log List */}
@@ -152,12 +161,14 @@ export const Timeline: React.FC<TimelineProps> = ({
                 key={i}
                 className="flex items-start gap-3 text-xs bg-slate-50/80 p-3 rounded-lg border border-slate-100"
               >
-                <div className="w-2 h-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#173B67] mt-1.5 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="font-semibold text-slate-800">
                       {evt.status === 'Resolved'
                         ? 'Complaint Marked as Resolved'
+                        : evt.status === 'Rejected'
+                        ? 'Complaint Marked as Rejected'
                         : evt.status === 'In Progress'
                         ? 'Investigating / Work Order Dispatched'
                         : 'Ticket Registered'}

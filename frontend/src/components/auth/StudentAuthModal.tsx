@@ -137,7 +137,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
           type="button"
           onClick={() => setMode('login')}
           className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-            mode === 'login' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            mode === 'login' ? 'bg-[#173B67] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           Sign In
@@ -147,7 +147,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
           type="button"
           onClick={() => setMode('register')}
           className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-            mode === 'register' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            mode === 'register' ? 'bg-[#173B67] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           New Student Register
@@ -172,7 +172,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                   placeholder="e.g. rahul.sharma@college.edu"
                   value={loginIdentifier}
                   onChange={(e) => setLoginIdentifier(e.target.value)}
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -192,7 +192,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                   placeholder="Enter your password"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
               id="btn-submit-student-login"
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 px-4 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-sm rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:ring-offset-2 disabled:opacity-50 cursor-pointer"
             >
               {loading ? 'Authenticating...' : 'Sign In to Student Portal'}
             </button>
@@ -221,7 +221,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="e.g. Siddharth Mukherjee"
                 value={regFullName}
                 onChange={(e) => setRegFullName(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
 
@@ -236,7 +236,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="e.g. 2025CSB099"
                 value={regStudentId}
                 onChange={(e) => setRegStudentId(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm uppercase focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm uppercase focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
           </div>
@@ -253,7 +253,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="name.roll@college.edu"
                 value={regEmail}
                 onChange={(e) => setRegEmail(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
 
@@ -265,7 +265,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="+91 98765 00000"
                 value={regPhone}
                 onChange={(e) => setRegPhone(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
           </div>
@@ -279,7 +279,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 id="select-reg-department"
                 value={regDepartment}
                 onChange={(e) => setRegDepartment(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               >
                 {DEPARTMENTS.map((dept) => (
                   <option key={dept} value={dept}>
@@ -297,7 +297,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 id="select-reg-year"
                 value={regYearSemester}
                 onChange={(e) => setRegYearSemester(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               >
                 {YEARS_SEMESTERS.map((yr) => (
                   <option key={yr} value={yr}>
@@ -320,7 +320,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="Min 6 characters"
                 value={regPassword}
                 onChange={(e) => setRegPassword(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
 
@@ -335,7 +335,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
                 placeholder="Re-enter password"
                 value={regConfirmPassword}
                 onChange={(e) => setRegConfirmPassword(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
           </div>
@@ -344,7 +344,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
             id="btn-submit-student-register"
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 cursor-pointer mt-2"
+            className="w-full py-2.5 px-4 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-sm rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#173B67] disabled:opacity-50 cursor-pointer mt-2"
           >
             {loading ? 'Creating Account...' : 'Complete Student Registration'}
           </button>
@@ -354,7 +354,7 @@ export const StudentAuthModal: React.FC<StudentAuthModalProps> = ({
             <button 
               type="button"
               onClick={() => setMode('login')}
-              className="text-sm font-bold text-blue-600 hover:text-blue-800 focus:outline-none cursor-pointer"
+              className="text-sm font-bold text-[#173B67] hover:text-[#132f53] focus:outline-none cursor-pointer"
             >
               Login
             </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComplaintStatus } from '../../types';
-import { Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Clock, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
 
 interface StatusBadgeProps {
   status: ComplaintStatus;
@@ -9,24 +9,37 @@ interface StatusBadgeProps {
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md', showIcon = true }) => {
-  const configs = {
+  const configs: Record<
+    string,
+    { bg: string; text: string; border: string; icon: React.ReactNode; label: string }
+  > = {
     Pending: {
-      bg: 'bg-amber-50 text-amber-800 border-amber-200/80',
-      dot: 'bg-amber-500',
+      bg: '#FEF3C7',
+      text: '#B45309',
+      border: '#FDE68A',
       icon: <Clock className={size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} />,
       label: 'Pending',
     },
     'In Progress': {
-      bg: 'bg-blue-50 text-blue-800 border-blue-200/80',
-      dot: 'bg-blue-600 animate-pulse',
+      bg: '#DBEAFE',
+      text: '#1D4ED8',
+      border: '#BFDBFE',
       icon: <AlertCircle className={size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} />,
       label: 'In Progress',
     },
     Resolved: {
-      bg: 'bg-emerald-50 text-emerald-800 border-emerald-200/80',
-      dot: 'bg-emerald-500',
+      bg: '#DCFCE7',
+      text: '#15803D',
+      border: '#BBF7D0',
       icon: <CheckCircle2 className={size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} />,
       label: 'Resolved',
+    },
+    Rejected: {
+      bg: '#FEE2E2',
+      text: '#B91C1C',
+      border: '#FECACA',
+      icon: <XCircle className={size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} />,
+      label: 'Rejected',
     },
   };
 
@@ -38,10 +51,17 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md', s
     lg: 'px-3 py-1.5 text-sm font-semibold gap-2',
   };
 
+  const safeStatus = (status || 'pending').toLowerCase().replace(/\s+/g, '-');
+
   return (
     <span
-      id={`badge-status-${status.toLowerCase().replace(/\s+/g, '-')}`}
-      className={`inline-flex items-center rounded-full border shadow-xs transition-colors whitespace-nowrap ${config.bg} ${sizeClasses[size]}`}
+      id={`badge-status-${safeStatus}`}
+      style={{
+        backgroundColor: config.bg,
+        color: config.text,
+        borderColor: config.border,
+      }}
+      className={`inline-flex items-center rounded-full border shadow-xs transition-colors whitespace-nowrap ${sizeClasses[size]}`}
     >
       {showIcon && config.icon}
       <span>{config.label}</span>

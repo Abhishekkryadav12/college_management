@@ -86,19 +86,17 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
-        <div className="absolute right-0 bottom-0 w-80 h-80 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-[#173B67] rounded-xl p-6 sm:p-7 text-white shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-semibold backdrop-blur-xs">
-              <Sparkles className="w-3.5 h-3.5 text-blue-300" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-blue-200" />
               <span>Student Grievance Dashboard</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white tracking-tight">
               Welcome back, {studentUser?.fullName}!
             </h1>
-            <p className="text-xs sm:text-sm text-blue-100 font-normal">
+            <p className="text-xs sm:text-sm text-slate-200 font-normal">
               {studentUser?.department} • {studentUser?.yearSemester} (Roll No: {studentUser?.studentId})
             </p>
           </div>
@@ -107,9 +105,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
             <button
               id="dash-btn-submit-complaint"
               onClick={() => onNavigate('submit-complaint')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-900 text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-100 text-[#173B67] text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer"
             >
-              <PlusCircle className="w-4 h-4 text-blue-600" />
+              <PlusCircle className="w-4 h-4 text-[#173B67]" />
               Lodge New Complaint
             </button>
             <button
@@ -167,7 +165,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
       {/* Main Grid: Recent Complaints + Quick Guidelines */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Complaints (2 Cols) */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
             <div>
               <h2 className="text-sm font-bold text-slate-900">Recent Complaints</h2>
@@ -177,7 +175,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
               <button
                 id="btn-view-all-complaints-link"
                 onClick={() => onNavigate('my-complaints')}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-[#173B67] hover:text-[#132f53] flex items-center gap-1 cursor-pointer"
               >
                 View all
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -201,7 +199,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
                     key={item.id}
                     id={`recent-complaint-card-${item.id}`}
                     onClick={() => onSelectComplaint(item.id)}
-                    className="p-4 rounded-xl border border-slate-200/70 hover:border-blue-300 hover:bg-slate-50/60 transition-all cursor-pointer group flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                    className="p-4 rounded-xl border border-slate-200/70 hover:border-slate-300 hover:bg-slate-50/80 transition-all cursor-pointer group flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
                     <div className="space-y-1.5 flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -209,7 +207,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
                         <CategoryBadge category={item.category} size="sm" />
                         <PriorityBadge priority={item.priority} size="sm" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors line-clamp-1">
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#173B67] transition-colors line-clamp-1">
                         {item.title}
                       </h3>
                       <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
@@ -226,7 +224,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
 
                     <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
                       <StatusBadge status={item.status} size="md" />
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-transform group-hover:translate-x-0.5" />
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#173B67] transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </div>
                 ))}
@@ -237,37 +235,37 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onNavigate, 
 
         {/* Right Info Column: Quick Guidance & SLA */}
         <div className="space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="bg-white p-5 rounded-xl border border-slate-200/90 shadow-xs">
             <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-blue-600" />
+              <Clock className="w-4 h-4 text-[#173B67]" />
               Standard Resolution SLAs
             </h3>
             <div className="space-y-2.5 text-xs">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-rose-50 border border-rose-100">
-                <span className="font-bold text-rose-900">Urgent Priority</span>
-                <span className="font-semibold text-rose-700">Same Day (4-8 hrs)</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#FEE2E2] border border-[#FECACA]">
+                <span className="font-bold text-[#B91C1C]">Urgent Priority</span>
+                <span className="font-semibold text-[#B91C1C]">Same Day (4-8 hrs)</span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-orange-50 border border-orange-100">
                 <span className="font-bold text-orange-900">High Priority</span>
                 <span className="font-semibold text-orange-700">24-48 hours</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-sky-50 border border-sky-100">
-                <span className="font-bold text-sky-900">Medium Priority</span>
-                <span className="font-semibold text-sky-700">3 working days</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#DBEAFE] border border-[#BFDBFE]">
+                <span className="font-bold text-[#1D4ED8]">Medium Priority</span>
+                <span className="font-semibold text-[#1D4ED8]">3 working days</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#F4F7FB] border border-slate-200">
                 <span className="font-bold text-slate-800">Low Priority</span>
                 <span className="font-semibold text-slate-600">5-7 working days</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-50 to-blue-50/50 p-5 rounded-2xl border border-indigo-100 shadow-xs">
-            <h3 className="text-sm font-bold text-indigo-950 mb-2">Need Emergency Support?</h3>
-            <p className="text-xs text-indigo-800 leading-relaxed mb-3">
+          <div className="bg-[#F4F7FB] p-5 rounded-xl border border-slate-200 shadow-xs">
+            <h3 className="text-sm font-bold text-[#173B67] mb-2">Need Emergency Support?</h3>
+            <p className="text-xs text-slate-600 leading-relaxed mb-3">
               For immediate medical, fire, or severe security issues, please contact the campus main gate control room directly.
             </p>
-            <div className="text-xs font-mono font-bold text-indigo-900 bg-white/80 p-2.5 rounded-xl border border-indigo-200">
+            <div className="text-xs font-mono font-bold text-[#173B67] bg-white p-2.5 rounded-lg border border-slate-200">
               Campus Helpline: +91 11-2800-4321
             </div>
           </div>

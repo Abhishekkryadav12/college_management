@@ -59,7 +59,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
         <button
           id="btn-back-from-profile"
           onClick={() => onNavigate('student-dashboard')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 mb-2 cursor-pointer transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#173B67] mb-2 cursor-pointer transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Dashboard
@@ -74,14 +74,14 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left ID Card Summary */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 flex flex-col items-center text-center space-y-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-700 to-indigo-600 text-white font-bold text-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+        <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs p-6 flex flex-col items-center text-center space-y-4">
+          <div className="w-20 h-20 rounded-full bg-[#173B67] text-white font-bold text-2xl flex items-center justify-center shadow-xs">
             {fullName.charAt(0) || 'S'}
           </div>
 
           <div>
             <h3 className="text-base font-bold text-slate-900">{fullName}</h3>
-            <p className="text-xs font-mono font-semibold text-blue-700 mt-0.5 bg-blue-50 px-2 py-0.5 rounded-md inline-block">
+            <p className="text-xs font-mono font-semibold text-[#173B67] mt-0.5 bg-[#F4F7FB] border border-slate-200 px-2 py-0.5 rounded-md inline-block">
               {studentUser?.studentId}
             </p>
           </div>
@@ -101,7 +101,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-slate-500">Resolved Rate:</span>
-              <span className="font-semibold text-emerald-600">
+              <span className="font-semibold text-[#15803D]">
                 {studentComplaints.length > 0
                   ? `${Math.round((resolvedCount / studentComplaints.length) * 100)}%`
                   : 'N/A'}
@@ -111,10 +111,10 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
         </div>
 
         {/* Right Form Card */}
-        <div className="md:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+        <div className="md:col-span-2 bg-white rounded-xl border border-slate-200/90 shadow-xs p-6 sm:p-8">
           <form onSubmit={handleSave} className="space-y-4">
             <h3 className="text-sm font-bold text-slate-900 pb-2 border-b border-slate-100 flex items-center gap-2">
-              <User className="w-4 h-4 text-blue-600" />
+              <User className="w-4 h-4 text-[#173B67]" />
               Edit Student Credentials
             </h3>
 
@@ -129,7 +129,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
                 />
               </div>
 
@@ -158,7 +158,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
                 />
               </div>
 
@@ -170,7 +170,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                   placeholder="+91 98765 43210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                   id="profile-select-dept"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
                 >
                   {DEPARTMENTS.map((d) => (
                     <option key={d} value={d}>
@@ -198,7 +198,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                   id="profile-select-year"
                   value={yearSemester}
                   onChange={(e) => setYearSemester(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
                 >
                   {YEARS_SEMESTERS.map((y) => (
                     <option key={y} value={y}>
@@ -214,7 +214,7 @@ export const StudentProfile: React.FC<StudentProfileProps> = ({ onNavigate }) =>
                 id="btn-save-profile"
                 type="submit"
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#173B67] disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 {saving ? 'Saving Changes...' : 'Save Profile Details'}

@@ -101,17 +101,17 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         <AnimatePresence>
           {toasts.map((toast) => {
             const icons = {
-              success: <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />,
-              error: <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />,
-              info: <Info className="w-5 h-5 text-blue-600 shrink-0" />,
-              warning: <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />,
+              success: <CheckCircle2 className="w-5 h-5 text-[#15803D] shrink-0" />,
+              error: <AlertCircle className="w-5 h-5 text-[#B91C1C] shrink-0" />,
+              info: <Info className="w-5 h-5 text-[#1D4ED8] shrink-0" />,
+              warning: <AlertTriangle className="w-5 h-5 text-[#B45309] shrink-0" />,
             };
 
             const bgBorders = {
-              success: 'bg-emerald-50/95 border-emerald-200 text-emerald-950 shadow-emerald-100/50',
-              error: 'bg-rose-50/95 border-rose-200 text-rose-950 shadow-rose-100/50',
-              info: 'bg-blue-50/95 border-blue-200 text-blue-950 shadow-blue-100/50',
-              warning: 'bg-amber-50/95 border-amber-200 text-amber-950 shadow-amber-100/50',
+              success: 'bg-[#DCFCE7] border-[#BBF7D0] text-[#15803D] shadow-xs',
+              error: 'bg-[#FEE2E2] border-[#FECACA] text-[#B91C1C] shadow-xs',
+              info: 'bg-[#DBEAFE] border-[#BFDBFE] text-[#1D4ED8] shadow-xs',
+              warning: 'bg-[#FEF3C7] border-[#FDE68A] text-[#B45309] shadow-xs',
             };
 
             return (

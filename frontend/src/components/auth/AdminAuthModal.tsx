@@ -105,8 +105,8 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
           <button
             type="button"
             onClick={() => setMode('login')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer \${
-              mode === 'login' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+              mode === 'login' ? 'bg-[#173B67] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Admin Sign In
@@ -114,8 +114,8 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
           <button
             type="button"
             onClick={() => setMode('register')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer \${
-              mode === 'register' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+              mode === 'register' ? 'bg-[#173B67] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Register Admin
@@ -123,13 +123,13 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
         </div>
 
         {/* Security badge ribbon */}
-        <div className="p-3 bg-slate-900 text-slate-100 rounded-xl flex items-center gap-3 border border-slate-800">
-          <div className="p-2 rounded-lg bg-blue-600 text-white shrink-0">
-            <ShieldCheck className="w-5 h-5" />
+        <div className="p-3 bg-[#173B67] text-white rounded-xl flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-white/10 text-white shrink-0">
+            <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs font-bold">Authorized Personnel Only</p>
-            <p className="text-[11px] text-slate-400">Review status, assign technicians & mark resolutions</p>
+            <p className="text-xs font-bold text-white">Authorized Personnel Only</p>
+            <p className="text-[11px] text-slate-200">Review status, assign technicians & mark resolutions</p>
           </div>
         </div>
 
@@ -147,7 +147,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="e.g. admin@college.com or admin_username"
                   value={loginIdentifier}
                   onChange={(e) => setLoginIdentifier(e.target.value)}
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="admin123"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -174,21 +174,21 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm rounded-xl shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-slate-900 disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 px-4 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-sm rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#173B67] disabled:opacity-50 cursor-pointer"
             >
               {loading ? 'Authenticating Admin...' : 'Sign In as Administrator'}
             </button>
             
             {/* 1-Click Fill helper */}
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between bg-blue-50/60 p-3 rounded-xl border border-blue-100">
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-between bg-[#F4F7FB] p-3 rounded-xl border border-slate-200">
               <div>
-                <p className="text-xs font-bold text-blue-900">Demo Admin Credentials</p>
-                <p className="text-[11px] text-blue-700 font-mono">admin@college.com / admin123</p>
+                <p className="text-xs font-bold text-[#173B67]">Demo Admin Credentials</p>
+                <p className="text-[11px] text-slate-600 font-mono">admin@college.com / admin123</p>
               </div>
               <button
                 type="button"
                 onClick={handleAutofill}
-                className="px-3 py-1.5 text-xs font-bold text-blue-700 hover:text-white hover:bg-blue-600 bg-white border border-blue-300 rounded-lg transition-colors cursor-pointer shadow-xs"
+                className="px-3 py-1.5 text-xs font-bold text-[#173B67] hover:bg-slate-100 bg-white border border-slate-200 rounded-lg transition-colors cursor-pointer shadow-2xs"
               >
                 Auto-fill
               </button>
@@ -205,7 +205,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="e.g. Dr. Arthur Vance"
                   value={regFullName}
                   onChange={(e) => setRegFullName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
               <div>
@@ -216,7 +216,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="e.g. avance_admin"
                   value={regUsername}
                   onChange={(e) => setRegUsername(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -230,7 +230,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="e.g. admin@college.edu"
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
               <div>
@@ -240,7 +240,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="e.g. +91 98765 43210"
                   value={regPhone}
                   onChange={(e) => setRegPhone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -254,7 +254,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="Min 6 chars"
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
               <div>
@@ -265,7 +265,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
                   placeholder="Confirm password"
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -273,9 +273,9 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose,
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm rounded-xl shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-slate-900 disabled:opacity-50 cursor-pointer mt-4"
+              className="w-full py-2.5 px-4 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-sm rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#173B67] disabled:opacity-50 cursor-pointer mt-4"
             >
-              {loading ? 'Registering...' : 'Admin Registration Button'}
+              {loading ? 'Registering...' : 'Complete Administrator Registration'}
             </button>
           </form>
         )}

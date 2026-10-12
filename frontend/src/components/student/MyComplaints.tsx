@@ -127,7 +127,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
         <button
           id="btn-lodge-new-complaint-top"
           onClick={() => onNavigate('submit-complaint')}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#173B67] hover:bg-[#132f53] text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           Lodge New Complaint
@@ -135,7 +135,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
       </div>
 
       {/* Filter and Search Toolbar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200/90 shadow-xs space-y-3">
         <div className="flex flex-col md:flex-row gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
@@ -148,7 +148,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
               placeholder="Search by ticket ID, title, or location..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
             />
             {searchTerm && (
               <button
@@ -167,7 +167,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
               id="filter-category"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
             >
               <option value="all">All Categories</option>
               {CATEGORIES.map((c) => (
@@ -182,12 +182,13 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
               id="filter-status"
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
             >
               <option value="all">All Statuses</option>
               <option value="Pending">Pending</option>
               <option value="In Progress">In Progress</option>
               <option value="Resolved">Resolved</option>
+              <option value="Rejected">Rejected</option>
             </select>
 
             {/* Priority Filter */}
@@ -195,7 +196,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
               id="filter-priority"
               value={selectedPriority}
               onChange={(e) => setSelectedPriority(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
             >
               <option value="all">All Priorities</option>
               {PRIORITIES.map((p) => (
@@ -209,7 +210,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
               <button
                 id="btn-reset-filters"
                 onClick={resetFilters}
-                className="px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-3 py-2 text-xs font-semibold text-[#B91C1C] hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Reset
@@ -228,7 +229,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
       </div>
 
       {/* Complaints Table & Card List */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
         {complaints.length === 0 ? (
           <EmptyState
             type="no-complaints"
@@ -250,7 +251,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
             {/* Desktop Table View */}
             <div className="overflow-x-auto hidden md:block">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+                <thead className="bg-[#F4F7FB] border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
                   <tr>
                     <th className="py-3.5 px-4">Ticket ID</th>
                     <th className="py-3.5 px-4">Title & Subject</th>
@@ -273,7 +274,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
                       <td className="py-3.5 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">
                         {item.id}
                       </td>
-                      <td className="py-3.5 px-4 font-bold text-slate-900 group-hover:text-blue-700 transition-colors max-w-xs truncate">
+                      <td className="py-3.5 px-4 font-bold text-slate-900 group-hover:text-[#173B67] transition-colors max-w-xs truncate">
                         {item.title}
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap">
@@ -298,7 +299,7 @@ export const MyComplaints: React.FC<MyComplaintsProps> = ({ onNavigate, onSelect
                             e.stopPropagation();
                             onSelectComplaint(item.id);
                           }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#173B67] bg-[#F4F7FB] hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           View Details

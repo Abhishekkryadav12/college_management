@@ -68,10 +68,10 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-            className={`relative bg-white rounded-2xl shadow-2xl border border-slate-100 w-full ${widthClasses[maxWidth]} overflow-hidden z-10 my-8`}
+            className={`relative bg-white rounded-xl shadow-xl border border-slate-200 w-full ${widthClasses[maxWidth]} overflow-hidden z-10 my-8`}
           >
             {/* Header */}
-            <div className="flex items-start justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/60">
+            <div className="flex items-start justify-between px-6 py-5 border-b border-slate-100 bg-[#F4F7FB]">
               <div className="pr-4">
                 <h3 className="text-lg font-bold text-slate-900 leading-tight">{title}</h3>
                 {subtitle && <p className="text-xs text-slate-500 mt-1">{subtitle}</p>}

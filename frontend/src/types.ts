@@ -11,7 +11,7 @@ export type ComplaintCategory =
 
 export type Priority = 'Low' | 'Medium' | 'High' | 'Urgent';
 
-export type ComplaintStatus = 'Pending' | 'In Progress' | 'Resolved';
+export type ComplaintStatus = 'Pending' | 'In Progress' | 'Resolved' | 'Rejected';
 
 export interface TimelineEvent {
   status: ComplaintStatus;

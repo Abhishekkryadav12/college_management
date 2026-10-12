@@ -26,8 +26,8 @@ export const PriorityBadge: React.FC<PriorityBadgeProps> = ({ priority, size = '
       label: 'High',
     },
     Urgent: {
-      bg: 'bg-rose-50 text-rose-800 border-rose-200 animate-pulse',
-      icon: <Flame className="w-3 h-3 text-rose-600" />,
+      bg: 'bg-[#FEE2E2] text-[#B91C1C] border-[#FECACA]',
+      icon: <Flame className="w-3 h-3 text-[#B91C1C]" />,
       label: 'Urgent',
     },
   };

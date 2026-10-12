@@ -75,6 +75,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
     Pending: 1,
     'In Progress': 2,
     Resolved: 3,
+    Rejected: 4,
   };
 
   const filteredAndSortedComplaints = useMemo(() => {
@@ -215,7 +216,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
             disabled={loading}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer disabled:opacity-50"
           >
-            <RotateCcw className={`w-4 h-4 text-blue-600 ${loading ? 'animate-spin' : ''}`} />
+            <RotateCcw className={`w-4 h-4 text-[#173B67] ${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Refreshing...' : 'Refresh'}
           </button>
           <button
@@ -230,8 +231,8 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-3">
-        <div className="flex flex-col lg:flex-row gap-3">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200/90 shadow-xs space-y-3">
+        <div className="flex flex-col lg:row gap-3">
           {/* Main Search Input */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -243,7 +244,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
               placeholder="Search by ticket ID, student name, roll number, title, or location..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
             />
             {searchTerm && (
               <button
@@ -280,7 +281,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
             id="admin-filter-category"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
           >
             <option value="all">All Categories</option>
             {CATEGORIES.map((c) => (
@@ -294,19 +295,20 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
             id="admin-filter-status"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
           >
             <option value="all">All Statuses</option>
             <option value="Pending">Pending</option>
             <option value="In Progress">In Progress</option>
             <option value="Resolved">Resolved</option>
+            <option value="Rejected">Rejected</option>
           </select>
 
           <select
             id="admin-filter-priority"
             value={selectedPriority}
             onChange={(e) => setSelectedPriority(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
           >
             <option value="all">All Priorities</option>
             {PRIORITIES.map((p) => (
@@ -320,7 +322,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
             id="admin-filter-department"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer max-w-xs truncate"
+            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer max-w-xs truncate"
           >
             <option value="all">All Departments</option>
             {DEPARTMENTS.map((d) => (
@@ -334,7 +336,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
             <button
               id="btn-admin-reset-filters"
               onClick={resetFilters}
-              className="px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
+              className="px-3 py-1.5 text-xs font-semibold text-[#B91C1C] hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset Filters
@@ -349,7 +351,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
       </div>
 
       {/* Main Complaint Management Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
         {complaints.length === 0 ? (
           <EmptyState
             type="no-complaints"
@@ -367,7 +369,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+              <thead className="bg-[#F4F7FB] border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">Ticket ID</th>
                   <th className="py-3.5 px-4">Student Name</th>
@@ -401,7 +403,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <CategoryBadge category={item.category || 'Other'} size="sm" />
                     </td>
-                    <td className="py-3.5 px-4 font-semibold text-slate-800 max-w-xs truncate group-hover:text-indigo-700 transition-colors">
+                    <td className="py-3.5 px-4 font-semibold text-slate-800 max-w-xs truncate group-hover:text-[#173B67] transition-colors">
                       {item.title || 'Complaint'}
                     </td>
                     <td className="py-3.5 px-4 text-slate-600 whitespace-nowrap">
@@ -423,7 +425,7 @@ export const AdminComplaintManagement: React.FC<AdminComplaintManagementProps> =
                           e.stopPropagation();
                           onSelectComplaint(item.id);
                         }}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#173B67] bg-[#F4F7FB] hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors cursor-pointer"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         Manage & Update

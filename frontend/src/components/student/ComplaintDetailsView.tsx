@@ -55,7 +55,7 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
         <button
           id="btn-back-from-details"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#173B67] transition-colors cursor-pointer bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to List
@@ -74,12 +74,12 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
       </div>
 
       {/* Main Card */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
         {/* Header Ribbon */}
-        <div className="p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white">
+        <div className="p-6 sm:p-7 bg-[#173B67] text-white">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs sm:text-sm font-bold text-blue-300 bg-blue-900/60 px-3 py-1 rounded-lg border border-blue-700/60">
+              <span className="font-mono text-xs sm:text-sm font-bold text-white bg-white/15 px-3 py-1 rounded-lg border border-white/20">
                 {complaint.id}
               </span>
               <StatusBadge status={complaint.status} size="lg" />
@@ -95,18 +95,18 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
             {complaint.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300 mt-4 pt-4 border-t border-white/10">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-200 mt-4 pt-4 border-t border-white/15">
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-blue-400" />
+              <MapPin className="w-4 h-4 text-blue-200" />
               {complaint.location}
             </span>
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-blue-400" />
+              <Calendar className="w-4 h-4 text-blue-200" />
               Submitted: {formatDate(complaint.createdAt)}
             </span>
             {complaint.resolvedAt && (
-              <span className="flex items-center gap-1.5 text-emerald-300 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span className="flex items-center gap-1.5 text-[#DCFCE7] font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-[#DCFCE7]" />
                 Resolved: {formatDate(complaint.resolvedAt)}
               </span>
             )}
@@ -116,7 +116,7 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
         {/* Content Section */}
         <div className="p-6 sm:p-8 space-y-8">
           {/* Visual Status Progress Flow */}
-          <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80">
+          <div className="bg-[#F4F7FB] p-5 rounded-xl border border-slate-200">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">
               Grievance Progress Life-Cycle
             </h3>
@@ -132,10 +132,10 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
           {/* Grievance Description */}
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-blue-600" />
+              <MessageSquare className="w-4 h-4 text-[#173B67]" />
               Complaint Statement
             </h3>
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/70 text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+            <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
               {complaint.description}
             </div>
           </div>
@@ -144,10 +144,10 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
           {complaint.imageUrl && (
             <div className="space-y-3">
               <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-blue-600" />
+                <ImageIcon className="w-4 h-4 text-[#173B67]" />
                 Attached Photographic Evidence
               </h3>
-              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 inline-block">
+              <div className="p-3 bg-[#F4F7FB] rounded-xl border border-slate-200 inline-block">
                 <img
                   src={complaint.imageUrl}
                   alt={complaint.imageName || 'Attached Evidence'}
@@ -164,18 +164,18 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
           {/* Administrative Remarks & Resolution Note */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Admin Remarks */}
-            <div className="p-5 rounded-2xl border bg-blue-50/50 border-blue-100 space-y-2">
+            <div className="p-5 rounded-xl border bg-[#F4F7FB] border-slate-200 space-y-2">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-blue-700" />
-                <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900">
+                <ShieldCheck className="w-4 h-4 text-[#173B67]" />
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#173B67]">
                   Administrative Remarks
                 </h4>
               </div>
-              <p className="text-xs text-blue-950 leading-relaxed font-normal">
+              <p className="text-xs text-slate-700 leading-relaxed font-normal">
                 {complaint.adminRemarks || 'Ticket is queued. Administrative review remarks will appear here.'}
               </p>
               {complaint.assignedDepartmentOfficer && (
-                <p className="text-[11px] text-blue-700 font-semibold pt-1 border-t border-blue-200/60">
+                <p className="text-[11px] text-[#173B67] font-semibold pt-1 border-t border-slate-200">
                   Assigned Unit: {complaint.assignedDepartmentOfficer}
                 </p>
               )}
@@ -183,34 +183,46 @@ export const ComplaintDetailsView: React.FC<ComplaintDetailsViewProps> = ({ comp
 
             {/* Resolution Certificate Note */}
             <div
-              className={`p-5 rounded-2xl border space-y-2 ${
+              className={`p-5 rounded-xl border space-y-2 ${
                 complaint.status === 'Resolved'
-                  ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950'
-                  : 'bg-slate-50 border-slate-200 text-slate-500'
+                  ? 'bg-[#DCFCE7] border-[#BBF7D0] text-[#15803D]'
+                  : complaint.status === 'Rejected'
+                  ? 'bg-[#FEE2E2] border-[#FECACA] text-[#B91C1C]'
+                  : 'bg-[#F4F7FB] border-slate-200 text-slate-500'
               }`}
             >
               <div className="flex items-center gap-2">
                 <FileCheck
                   className={`w-4 h-4 ${
-                    complaint.status === 'Resolved' ? 'text-emerald-700' : 'text-slate-400'
+                    complaint.status === 'Resolved'
+                      ? 'text-[#15803D]'
+                      : complaint.status === 'Rejected'
+                      ? 'text-[#B91C1C]'
+                      : 'text-slate-400'
                   }`}
                 />
                 <h4
                   className={`text-xs font-bold uppercase tracking-wider ${
-                    complaint.status === 'Resolved' ? 'text-emerald-900' : 'text-slate-500'
+                    complaint.status === 'Resolved'
+                      ? 'text-[#15803D]'
+                      : complaint.status === 'Rejected'
+                      ? 'text-[#B91C1C]'
+                      : 'text-slate-500'
                   }`}
                 >
-                  Resolution Note
+                  {complaint.status === 'Rejected' ? 'Rejection Notice' : 'Resolution Note'}
                 </h4>
               </div>
               <p className="text-xs leading-relaxed">
                 {complaint.resolutionNote ||
                   (complaint.status === 'Resolved'
                     ? 'Maintenance activity verified and ticket successfully closed.'
+                    : complaint.status === 'Rejected'
+                    ? 'This ticket was closed as Rejected following administrative review.'
                     : 'Resolution details and technician notes will be posted upon completion.')}
               </p>
               {complaint.resolvedAt && (
-                <p className="text-[11px] text-emerald-700 font-semibold pt-1 border-t border-emerald-200/60">
+                <p className="text-[11px] font-semibold pt-1 border-t border-current/20">
                   Closed on: {formatDate(complaint.resolvedAt)}
                 </p>
               )}

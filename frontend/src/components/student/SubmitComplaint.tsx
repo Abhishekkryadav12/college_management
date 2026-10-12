@@ -151,7 +151,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
           <button
             id="btn-back-to-dash"
             onClick={() => onNavigate('student-dashboard')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 mb-2 cursor-pointer transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#173B67] mb-2 cursor-pointer transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard
@@ -166,17 +166,17 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
       </div>
 
       {/* Main Form Card */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs p-6 sm:p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Submitter Summary Banner */}
-          <div className="p-3.5 bg-blue-50/70 border border-blue-100 rounded-xl flex items-center justify-between text-xs flex-wrap gap-2">
+          <div className="p-3.5 bg-[#F4F7FB] border border-slate-200 rounded-xl flex items-center justify-between text-xs flex-wrap gap-2">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-blue-900">Reporting Student:</span>
-              <span className="text-blue-800">{studentUser?.fullName}</span>
-              <span className="text-blue-500">•</span>
-              <span className="font-mono text-blue-800">{studentUser?.studentId}</span>
+              <span className="font-bold text-[#173B67]">Reporting Student:</span>
+              <span className="text-slate-800">{studentUser?.fullName}</span>
+              <span className="text-slate-400">•</span>
+              <span className="font-mono text-slate-700">{studentUser?.studentId}</span>
             </div>
-            <span className="text-blue-700 font-medium">{studentUser?.department}</span>
+            <span className="text-[#173B67] font-semibold">{studentUser?.department}</span>
           </div>
 
           {/* Title */}
@@ -191,7 +191,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
               placeholder="e.g. Ceiling fan not working / Water leakage in 2nd floor restroom"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
             />
           </div>
 
@@ -221,15 +221,15 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                     onClick={() => setCategory(cat.label)}
                     className={`p-3 rounded-xl border text-left transition-all flex flex-col gap-1 cursor-pointer ${
                       isSelected
-                        ? 'bg-blue-50/90 border-blue-500 text-blue-900 ring-2 ring-blue-500/20 shadow-xs'
+                        ? 'bg-[#DBEAFE] border-[#1D4ED8] text-[#1D4ED8] ring-2 ring-[#1D4ED8]/20 shadow-xs'
                         : 'bg-slate-50/70 border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-100/70'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div className={isSelected ? 'text-blue-600' : 'text-slate-500'}>
+                      <div className={isSelected ? 'text-[#1D4ED8]' : 'text-slate-500'}>
                         {icons[cat.label]}
                       </div>
-                      {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />}
+                      {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#1D4ED8]" />}
                     </div>
                     <span className="text-xs font-bold mt-1 leading-tight">{cat.label}</span>
                   </button>
@@ -256,7 +256,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                   placeholder="e.g. Hostel Block C - Room 304 / Lab 3"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
                 />
               </div>
               <p className="text-[11px] text-slate-500 mt-1">Specify hostel wing, floor, room number, or lab name.</p>
@@ -279,12 +279,12 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                       className={`py-2 px-1 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer ${
                         isSelected
                           ? p.label === 'Urgent'
-                            ? 'bg-rose-50 border-rose-500 text-rose-800 ring-2 ring-rose-500/20'
+                            ? 'bg-[#FEE2E2] border-[#B91C1C] text-[#B91C1C] ring-2 ring-[#B91C1C]/20'
                             : p.label === 'High'
                             ? 'bg-orange-50 border-orange-500 text-orange-800 ring-2 ring-orange-500/20'
                             : p.label === 'Medium'
-                            ? 'bg-sky-50 border-sky-500 text-sky-800 ring-2 ring-sky-500/20'
-                            : 'bg-slate-100 border-slate-500 text-slate-800 ring-2 ring-slate-400/20'
+                            ? 'bg-[#DBEAFE] border-[#1D4ED8] text-[#1D4ED8] ring-2 ring-[#1D4ED8]/20'
+                            : 'bg-[#F4F7FB] border-slate-400 text-slate-800 ring-2 ring-slate-400/20'
                           : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
                       }`}
                     >
@@ -311,7 +311,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
               placeholder="Explain the problem clearly, when it started, and how it impacts you..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] focus:border-transparent transition-all"
             />
           </div>
 
@@ -326,21 +326,21 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
+                className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-50/50'
+                    ? 'border-[#173B67] bg-[#DBEAFE]/30'
                     : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
                 }`}
               >
                 <div className="flex flex-col items-center justify-center">
-                  <div className="p-3 rounded-full bg-blue-50 text-blue-600 mb-2">
+                  <div className="p-3 rounded-full bg-[#F4F7FB] text-[#173B67] mb-2">
                     <Upload className="w-5 h-5" />
                   </div>
                   <p className="text-xs font-bold text-slate-800">
                     Drag and drop an image, or{' '}
                     <label
                       htmlFor="image-file-input"
-                      className="text-blue-600 hover:underline cursor-pointer font-bold"
+                      className="text-[#173B67] hover:underline cursor-pointer font-bold"
                     >
                       browse files
                     </label>
@@ -365,14 +365,14 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
                   />
                   <div>
                     <p className="text-xs font-bold text-slate-800 truncate max-w-xs">{imageName || 'Attached image'}</p>
-                    <p className="text-[11px] text-emerald-600 font-medium">Ready to upload</p>
+                    <p className="text-[11px] text-[#15803D] font-medium">Ready to upload</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   id="btn-remove-attached-image"
                   onClick={removeImage}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  className="p-1.5 text-slate-400 hover:text-[#B91C1C] hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                   title="Remove image"
                 >
                   <X className="w-4 h-4" />
@@ -395,7 +395,7 @@ export const SubmitComplaint: React.FC<SubmitComplaintProps> = ({ onNavigate, on
               id="btn-submit-complaint-final"
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
+              className="px-6 py-2.5 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-xs rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#173B67] disabled:opacity-50 cursor-pointer"
             >
               {submitting ? 'Submitting Grievance...' : 'Submit Complaint'}
             </button>

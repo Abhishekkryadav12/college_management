@@ -108,7 +108,7 @@ function MainApp() {
   const activeComplaint = selectedComplaintId ? getComplaintById(selectedComplaintId) : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#F4F7FB] flex flex-col selection:bg-[#173B67] selection:text-white">
       {/* Top Navbar */}
       <Navbar
         currentView={currentView}

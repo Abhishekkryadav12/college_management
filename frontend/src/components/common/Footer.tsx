@@ -23,11 +23,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAuth, onNavigate }) => {
           {/* Col 1: Brand & Purpose */}
           <div className="md:col-span-1 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-lg bg-[#173B67] flex items-center justify-center text-white">
                 <GraduationCap className="w-5 h-5" />
               </div>
               <span className="text-lg font-black text-white font-heading">
-                Campus<span className="text-blue-400">Care</span>
+                Campus<span className="text-[#DBEAFE]">Care</span>
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
@@ -35,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAuth, onNavigate }) => {
             </p>
             <div className="pt-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 Live Campus Portal 2026
               </span>
             </div>

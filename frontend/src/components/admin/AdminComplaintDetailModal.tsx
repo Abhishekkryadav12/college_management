@@ -115,10 +115,10 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
     >
       <div className="space-y-6">
         {/* Student & Ticket Quick Ribbon */}
-        <div className="p-4 bg-slate-900 text-white rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 bg-[#173B67] text-white rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-xs font-bold text-blue-300 bg-blue-950 px-2 py-0.5 rounded border border-blue-800">
+              <span className="font-mono text-xs font-bold text-white bg-white/15 px-2 py-0.5 rounded border border-white/20">
                 {complaint.id}
               </span>
               <StatusBadge status={complaint.status} size="sm" />
@@ -128,15 +128,15 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
             <h3 className="text-base font-bold text-white pt-1">{complaint.title}</h3>
           </div>
 
-          <div className="text-xs text-slate-300 text-left sm:text-right shrink-0">
+          <div className="text-xs text-slate-200 text-left sm:text-right shrink-0">
             <p className="font-semibold text-white">{complaint.studentName}</p>
-            <p className="font-mono text-slate-400">{complaint.studentId}</p>
-            <p className="text-[11px] text-slate-400">{complaint.department}</p>
+            <p className="font-mono text-slate-300">{complaint.studentId}</p>
+            <p className="text-[11px] text-slate-300">{complaint.department}</p>
           </div>
         </div>
 
         {/* Status Lifecycle Timeline */}
-        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+        <div className="bg-[#F4F7FB] p-4 rounded-xl border border-slate-200">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
             Current Resolution Stage
           </h4>
@@ -151,9 +151,9 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
 
         {/* Complaint Information Box */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-xs">
+          <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 space-y-2 text-xs">
             <h4 className="font-bold text-slate-900 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-blue-600" />
+              <MapPin className="w-3.5 h-3.5 text-[#173B67]" />
               Location & Details
             </h4>
             <p className="text-slate-700 font-semibold">{complaint.location}</p>
@@ -161,7 +161,7 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
             <p className="text-slate-500">Email: {complaint.studentEmail}</p>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-xs">
+          <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200 space-y-2 text-xs">
             <h4 className="font-bold text-slate-900">Grievance Statement</h4>
             <p className="text-slate-700 leading-relaxed max-h-24 overflow-y-auto whitespace-pre-wrap">
               {complaint.description}
@@ -171,9 +171,9 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
 
         {/* Attached Photo if available */}
         {complaint.imageUrl && (
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+          <div className="p-4 bg-[#F4F7FB] rounded-xl border border-slate-200">
             <h4 className="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
-              <ImageIcon className="w-3.5 h-3.5 text-blue-600" />
+              <ImageIcon className="w-3.5 h-3.5 text-[#173B67]" />
               Student Attachment Preview
             </h4>
             <img
@@ -188,11 +188,11 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
         {/* Administrative Action Form */}
         <form
           onSubmit={handleUpdate}
-          className="p-5 bg-gradient-to-br from-indigo-50/70 to-blue-50/40 rounded-2xl border border-indigo-100 space-y-4"
+          className="p-5 bg-white rounded-xl border border-slate-200 shadow-xs space-y-4"
         >
-          <div className="flex items-center gap-2 pb-2 border-b border-indigo-200/60">
-            <ShieldCheck className="w-4 h-4 text-indigo-700" />
-            <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-950">
+          <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <ShieldCheck className="w-4 h-4 text-[#173B67]" />
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
               Administrative Status Control
             </h4>
           </div>
@@ -200,24 +200,25 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Status Dropdown */}
             <div>
-              <label className="block text-xs font-bold text-indigo-950 mb-1">
+              <label className="block text-xs font-bold text-slate-700 mb-1">
                 Update Status <span className="text-rose-500">*</span>
               </label>
               <select
                 id="admin-select-status"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as ComplaintStatus)}
-                className="w-full px-3.5 py-2.5 bg-white border border-indigo-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67] cursor-pointer"
               >
-                <option value="Pending">⏳ Pending Review</option>
-                <option value="In Progress">⚙️ In Progress (Work Order Dispatched)</option>
-                <option value="Resolved">✅ Resolved (Closed Ticket)</option>
+                <option value="Pending">Pending Review</option>
+                <option value="In Progress">In Progress (Work Order Dispatched)</option>
+                <option value="Resolved">Resolved (Closed Ticket)</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </div>
 
             {/* Assigned Unit / Technician */}
             <div>
-              <label className="block text-xs font-bold text-indigo-950 mb-1">
+              <label className="block text-xs font-bold text-slate-700 mb-1">
                 Assigned Maintenance Unit / Officer
               </label>
               <input
@@ -226,14 +227,14 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
                 placeholder="e.g. Electrical Maintenance / Hostel Warden"
                 value={assignedUnit}
                 onChange={(e) => setAssignedUnit(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-white border border-indigo-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
               />
             </div>
           </div>
 
           {/* Admin Remarks */}
           <div>
-            <label className="block text-xs font-bold text-indigo-950 mb-1">
+            <label className="block text-xs font-bold text-slate-700 mb-1">
               Admin Remarks & Progress Updates
             </label>
             <textarea
@@ -242,14 +243,14 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
               placeholder="e.g. Technician dispatched with replacement part. Estimated resolution by 4 PM."
               value={adminRemarks}
               onChange={(e) => setAdminRemarks(e.target.value)}
-              className="w-full px-3.5 py-2 bg-white border border-indigo-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#173B67]"
             />
           </div>
 
           {/* Resolution Note (Show highlight if Resolved is picked) */}
           {status === 'Resolved' && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
-              <label className="block text-xs font-bold text-emerald-950">
+            <div className="p-3 bg-[#DCFCE7] border border-[#BBF7D0] rounded-xl space-y-1">
+              <label className="block text-xs font-bold text-[#15803D]">
                 Final Resolution Summary / Verification Note <span className="text-rose-500">*</span>
               </label>
               <textarea
@@ -259,8 +260,20 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
                 placeholder="e.g. Capacitor replaced, tested and verified working in order."
                 value={resolutionNote}
                 onChange={(e) => setResolutionNote(e.target.value)}
-                className="w-full px-3.5 py-2 bg-white border border-emerald-300 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-[#BBF7D0] rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#15803D]"
               />
+            </div>
+          )}
+
+          {/* Rejected Note highlight if Rejected is picked */}
+          {status === 'Rejected' && (
+            <div className="p-3 bg-[#FEE2E2] border border-[#FECACA] rounded-xl space-y-1">
+              <label className="block text-xs font-bold text-[#B91C1C]">
+                Rejection Reason (Will be visible to student)
+              </label>
+              <p className="text-[11px] text-[#B91C1C]">
+                Please explain in Admin Remarks why this complaint is not actionable or outside campus maintenance scope.
+              </p>
             </div>
           )}
 
@@ -278,7 +291,7 @@ export const AdminComplaintDetailModal: React.FC<AdminComplaintDetailModalProps>
               id="btn-admin-submit-update"
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#173B67] hover:bg-[#132f53] text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               {saving ? 'Updating Record...' : 'Save & Update Complaint'}

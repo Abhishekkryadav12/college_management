@@ -50,9 +50,10 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  Pending: '#f59e0b',
-  'In Progress': '#3b82f6',
-  Resolved: '#10b981',
+  Pending: '#B45309',
+  'In Progress': '#1D4ED8',
+  Resolved: '#15803D',
+  Rejected: '#B91C1C',
 };
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSelectComplaint }) => {
@@ -121,7 +122,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
       { name: 'Low', count: pCounts.Low, fill: '#64748b' },
       { name: 'Medium', count: pCounts.Medium, fill: '#0284c7' },
       { name: 'High', count: pCounts.High, fill: '#ea580c' },
-      { name: 'Urgent', count: pCounts.Urgent, fill: '#e11d48' },
+      { name: 'Urgent', count: pCounts.Urgent, fill: '#B91C1C' },
     ];
   }, [complaints]);
 
@@ -144,17 +145,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Admin Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+      <div className="bg-[#173B67] rounded-xl p-6 sm:p-7 text-white shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold backdrop-blur-xs border border-blue-400/20">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-200" />
               <span>Campus Grievance Redressal Authority Console</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white tracking-tight">
               Administrative Command Center
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300">
+            <p className="text-xs sm:text-sm text-slate-200">
               Dr. Arthur Vance (Dean / Chief Grievance Officer) • Campus Redressal Cell
             </p>
           </div>
@@ -164,7 +165,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
               id="admin-dash-btn-refresh"
               onClick={loadData}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-white text-xs font-bold rounded-xl border border-slate-700 shadow-md transition-all cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl border border-white/20 transition-all cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               {loading ? 'Refreshing...' : 'Refresh'}
@@ -172,9 +173,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
             <button
               id="admin-dash-btn-manage"
               onClick={() => onNavigate('admin-complaints')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-100 text-[#173B67] text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer"
             >
-              <FileText className="w-4 h-4" />
+              <FileText className="w-4 h-4 text-[#173B67]" />
               Manage All Grievances ({total})
             </button>
           </div>
@@ -183,16 +184,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
 
       {/* Urgent Attention Alert Banner if any */}
       {urgent > 0 && (
-        <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-center justify-between gap-4 flex-wrap shadow-xs">
+        <div className="p-4 bg-[#FEE2E2] border border-[#FECACA] rounded-xl flex items-center justify-between gap-4 flex-wrap shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-rose-600 text-white rounded-xl shadow-sm shrink-0">
-              <Flame className="w-5 h-5 animate-pulse" />
+            <div className="p-2 bg-[#B91C1C] text-white rounded-lg shadow-xs shrink-0">
+              <Flame className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-bold text-rose-950">
+              <h4 className="text-xs sm:text-sm font-bold text-[#B91C1C]">
                 {urgent} Urgent Campus Issue{urgent > 1 ? 's' : ''} Requiring Immediate Action
               </h4>
-              <p className="text-xs text-rose-800">
+              <p className="text-xs text-[#B91C1C]/90">
                 Safety hazards, power failures, or potable water emergencies pending resolution.
               </p>
             </div>
@@ -200,7 +201,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
           <button
             id="btn-view-urgent-filter"
             onClick={() => onNavigate('admin-complaints')}
-            className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shadow-xs"
+            className="px-3.5 py-1.5 bg-[#B91C1C] hover:bg-[#991b1b] text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shadow-xs"
           >
             Review Urgent Tickets
           </button>
@@ -259,10 +260,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
       {/* Visual Analytics Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Category Breakdown (Donut Chart) */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <PieIcon className="w-4 h-4 text-indigo-600" />
+              <PieIcon className="w-4 h-4 text-[#173B67]" />
               Category Breakdown
             </h3>
             <span className="text-xs text-slate-500 font-medium">Campus-wide distribution</span>
@@ -305,10 +306,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
         </div>
 
         {/* Status Distribution (Bar Chart) */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-6 rounded-xl border border-slate-200/90 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-blue-600" />
+              <BarChart3 className="w-4 h-4 text-[#173B67]" />
               Status Resolution Pipeline
             </h3>
             <span className="text-xs text-slate-500 font-medium">Ticket Lifecycle</span>
@@ -340,7 +341,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
       </div>
 
       {/* Recent Grievances Requiring Action */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-slate-900">Recent Complaints Queue</h3>
@@ -349,7 +350,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
           <button
             id="btn-admin-view-all-queue"
             onClick={() => onNavigate('admin-complaints')}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-[#173B67] hover:text-[#132f53] flex items-center gap-1 cursor-pointer"
           >
             Open Complaint Management Table
             <ArrowRight className="w-3.5 h-3.5" />
@@ -358,7 +359,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+            <thead className="bg-[#F4F7FB] border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-4">Ticket</th>
                 <th className="py-3 px-4">Student</th>
@@ -407,7 +408,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate, onSe
                           e.stopPropagation();
                           onSelectComplaint(item.id);
                         }}
-                        className="px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold text-[#173B67] bg-[#F4F7FB] hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors cursor-pointer"
                       >
                         Update
                       </button>
